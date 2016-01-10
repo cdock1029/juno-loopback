@@ -1,0 +1,11 @@
+{
+  "applications": {
+    "Juno": {
+      "parseAppId": "gAnUGUxCjdUA7otkmPulOQgCBerx0JGu7zPjYNB8",
+      "herokuAppId": "042aef7b-c065-4ea4-8766-1cb244e3ae2a"
+    },
+    "_default": {
+      "link": "Juno"
+    }
+  }
+}

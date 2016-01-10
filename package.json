@@ -1,0 +1,26 @@
+{
+  "name": "juno",
+  "version": "0.0.1",
+  "description": "Tenant management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cdock1029/juno.git"
+  },
+  "author": "Conor Dockry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cdock1029/juno/issues"
+  },
+  "homepage": "https://github.com/cdock1029/juno#readme",
+  "dependencies": {
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "react-redux": "^4.0.6",
+    "redux": "^3.0.5",
+    "redux-devtools": "^3.0.1"
+  }
+}
