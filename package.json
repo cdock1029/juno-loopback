@@ -4,7 +4,9 @@
   "description": "Tenant management",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "dev": "webpack-dev-server --progress --colors"
   },
   "repository": {
     "type": "git",
@@ -17,10 +19,23 @@
   },
   "homepage": "https://github.com/cdock1029/juno#readme",
   "dependencies": {
+    "parse": "^1.6.14",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-redux": "^4.0.6",
     "redux": "^3.0.5",
-    "redux-devtools": "^3.0.1"
+    "redux-logger": "^2.3.1",
+    "redux-thunk": "^1.0.3",
+    "webpack": "^1.12.10"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.4.0",
+    "babel-core": "^6.4.0",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-2": "^6.3.13",
+    "redux-devtools": "^3.0.1",
+    "webpack-dev-server": "^1.14.0"
   }
 }
