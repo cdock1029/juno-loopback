@@ -1,7 +1,10 @@
 import React from 'react'
 import Parse from 'parse'
 
-export default React.createClass({
+import { connect } from 'react-redux'
+import { routeActions } from 'redux-simple-router'
+
+const Header = React.createClass({
 
   render() {
     return (
@@ -16,8 +19,9 @@ export default React.createClass({
 
   logOut(e) {
     e.preventDefault()
-    console.log('logging out')
-    Parse.User.logOut()
+    Parse.User.logOut().then(() => this.props.dispatch(routeActions.push('/login')))
   }
 
 })
+
+export default connect()(Header)

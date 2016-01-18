@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux'
 
 import {
   REQUEST_PROPERTIES,
@@ -10,7 +9,7 @@ import {
 } from '../actions'
 
 //reducers
-export function properties(state = {
+function juno(state = {
   isFetching: false,
   properties: []
 }, action) {
@@ -51,3 +50,5 @@ export function properties(state = {
       return state
   }
 }
+
+module.exports = { juno }
