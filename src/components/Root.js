@@ -1,16 +1,36 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Provider } from 'react-redux'
-import PropertyList from './PropertyList'
 import configureStore from '../store'
+
+import Parse from 'parse'
+import ParseReact from 'parse-react'
+
+import PropertyListContainer from '../containers/PropertyListContainer'
+import LoginContainer from '../containers/LoginContainer'
+import Header from './Header'
 
 const store = configureStore()
 
-export default class Root extends Component {
+export default React.createClass({
+
+  mixins: [ParseReact.Mixin],
+
+  observe() {
+    return {
+      user: ParseReact.currentUser
+    }
+  },
+
   render() {
-    return (
-      <Provider store={store}>
-        <PropertyList />
-      </Provider>
-    )
+    const ui = this.data.user ?
+      (<div>
+        <Header />
+        <Provider store={store}>
+          <PropertyListContainer />
+        </Provider>
+      </div>) :
+      <LoginContainer />
+
+    return ui
   }
-}
+})
