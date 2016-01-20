@@ -17,7 +17,7 @@ import Root from './components/Root'
 import PropertyListContainer from './containers/PropertyListContainer'
 import LoginContainer from './containers/LoginContainer'
 
-Parse.initialize(process.env.JUNO_APP_ID, process.env.JUNO_JS_KEY)
+Parse.initialize(process.env.PARSE_APP_ID, process.env.PARSE_JS_KEY)
 
 const history = createHistory()
 const historyMiddleware = syncHistory(history)
