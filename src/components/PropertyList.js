@@ -1,5 +1,5 @@
 import React from 'react'
-import CreateUnitContainer from '../containers/CreateUnitContainer'
+import { Link } from 'react-router'
 import UnitListContainer from '../containers/UnitListContainer'
 
 export default ({ isFetching, properties }) => (
@@ -7,9 +7,7 @@ export default ({ isFetching, properties }) => (
     <ol>
       {properties.map(prop =>
         <li key={prop.id}>
-          <div>Name: {prop.get('name')}</div>
-          <CreateUnitContainer property={prop} />
-          <UnitListContainer property={prop} units={prop.get('units')} />
+          <Link to={`/units/${prop.id}`}>{prop.get('name')}</Link>
         </li>
       )}
     </ol>

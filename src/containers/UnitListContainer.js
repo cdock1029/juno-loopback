@@ -3,13 +3,20 @@ import Parse from 'parse'
 import {connect} from 'react-redux'
 import { removeUnitFromPropertyAndDelete } from '../actions'
 
+import CreateUnitContainer from '../containers/CreateUnitContainer'
 import UnitList from '../components/UnitList'
 
 const UnitListContainer = React.createClass({
 
   render() {
-    const { units } = this.props
-    return units ? <UnitList units={units} onClick={this.deleteUnit} /> : null
+    const { property, units } = this.props
+    return units ? (
+      <div>
+        <h4>{property.get('name')}</h4>
+        <CreateUnitContainer property={property} />
+        <UnitList units={units} onClick={this.deleteUnit} />
+      </div>
+    ) : null
   },
 
   deleteUnit(unit) {
@@ -19,4 +26,9 @@ const UnitListContainer = React.createClass({
 
 })
 
-export default connect(state => state)(UnitListContainer)
+export default connect(({juno: { properties }}, ownProps) => {
+  const id = ownProps.params.id;
+  const property = properties.filter(prop => prop.id === id).shift()
+  const units = property.get('units');
+  return { property, units };
+})(UnitListContainer)

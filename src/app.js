@@ -15,7 +15,9 @@ import createHistory from 'history/lib/createHashHistory'
 
 import Root from './components/Root'
 import PropertyListContainer from './containers/PropertyListContainer'
+import UnitListContainer from './containers/UnitListContainer'
 import LoginContainer from './containers/LoginContainer'
+import CreateTenantContainer from './containers/CreateTenantContainer'
 
 Parse.initialize(process.env.PARSE_APP_ID, process.env.PARSE_JS_KEY)
 
@@ -51,6 +53,8 @@ render((
       <Route path="/" component={Root}>
         <IndexRoute component={PropertyListContainer} onEnter={requireAuth} />
         <Route path="login" component={LoginContainer} />
+        <Route path="units/:id" component={UnitListContainer} onEnter={requireAuth} />
+        <Route path="new-tenant" component={CreateTenantContainer} onEnter={requireAuth} />
       </Route>
     </Router>
   </Provider>

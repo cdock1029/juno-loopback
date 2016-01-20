@@ -1,18 +1,26 @@
 import React from 'react'
-import Parse from 'parse'
+import Header from '../components/Header'
+import { connect } from 'react-redux'
 
-export default React.createClass({
-
-  getInitialState() {
-    return { user: Parse.User.current() }
-  },
+const Root = React.createClass({
 
   render() {
-    console.log('Root:props:', this.props)
+    const {children, location, user} = this.props
+    console.log('Root props:', this.props)
+    console.log('Root rendered - USER: ', this.props.user);
+    let header = null
+    if (user && location.pathname !== '/login') {
+      header = <Header />
+    }
     return (
       <div>
-        {this.props.children}
+        {header}
+        {children}
       </div>
     )
   }
 })
+
+export default connect(({juno: {user}}) => {
+  return {user}
+})(Root)

@@ -1,8 +1,8 @@
 import React from 'react'
 import Parse from 'parse'
 import { connect } from 'react-redux'
-import { routeActions } from 'redux-simple-router'
 
+import { loginUser } from '../actions'
 import Login from '../components/Login'
 
 const LoginContainer = React.createClass({
@@ -28,19 +28,7 @@ const LoginContainer = React.createClass({
 
   login(e) {
     e.preventDefault()
-    Parse.User.logIn(this.usernameInput.value, this.passwordInput.value)
-      .then(
-        user => {
-          const { dispatch, location } = this.props
-          console.log('logged in, location:', location)
-          if (location.state && location.state.nextPathname) {
-            dispatch(routeActions.push(location.state.nextPathname))
-          } else {
-            dispatch(routeActions.push('/'))
-          }
-        },
-        error => this.replaceState({...this.state, error: error.message})
-      )
+    this.props.dispatch(loginUser(this.usernameInput.value, this.passwordInput.value))
   }
 
 })

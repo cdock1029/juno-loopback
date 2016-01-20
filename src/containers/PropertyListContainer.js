@@ -2,21 +2,23 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { fetchProperties } from '../actions'
 
-import Header from '../components/Header'
 import PropertyList from '../components/PropertyList'
 
 const PropertyListContainer = React.createClass({
 
   componentDidMount() {
-    const { dispatch } = this.props
-    dispatch(fetchProperties())
+    const { dispatch, properties } = this.props
+    if (!properties.length) {
+      dispatch(fetchProperties())
+    }
   },
 
   render() {
-    console.log('PropertyListContainer: props:', this.props)
     return (
       <div>
-        <Header {...this.props} />
+        <br/>
+        <br/>
+        <button onClick={()=> this.props.dispatch(fetchProperties())}>{'\u21bb' + ' ' + 'Refresh'}</button>
         <PropertyList {...this.props} />
       </div>
     )
