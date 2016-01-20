@@ -13,8 +13,8 @@ module.exports = {
   },
   plugins: [
     new webpack.EnvironmentPlugin([
-      'JUNO_APP_ID',
-      'JUNO_JS_KEY'
+      'PARSE_APP_ID',
+      'PARSE_JS_KEY'
     ])
   ],
   module: {
