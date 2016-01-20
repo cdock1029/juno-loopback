@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
   entry: ['./src/app.js'],
   output: {
@@ -5,13 +7,20 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js'
   },
+  devtool: 'source-map',
   devServer: {
     contentBase: './ParseCloud/public'
   },
+  plugins: [
+    new webpack.EnvironmentPlugin([
+      'JUNO_APP_ID',
+      'JUNO_JS_KEY'
+    ])
+  ],
   module: {
     loaders: [
       {
-        test: /.js?$/,
+        test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
