@@ -68,24 +68,46 @@ const CreateTenantForm = React.createClass({
 })
 
 const userSchema = {
-  username: /^\w{3,30}$/,
-  password: /^\w{8,30}$/,
-  firstName: /^[A-Z]{2,40}$/,
-  middleName: /^[A-Z]{0,40}$/,
-  lastName: /^[A-Z]{2,40}$/,
-  email: /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|space|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/
+  username: {
+    rx: /^\w{3,30}$/,
+    msg: 'username must be 3 - 30 letters, numbers, or underscore _'
+  },
+  password: {
+    rx: /^\w{8,30}$/,
+    msg: 'password much be 8 - 30 letters, numbers, or underscore _'
+  },
+  firstName: {
+    rx: /^[A-Z]{2,40}$/,
+    msg: 'First name must be 2 or more letters'
+  },
+  middleName: {
+    rx: /^[A-Z]{0,40}$/,
+    msg: 'Middle name is optional, must be letters'
+  },
+  lastName: {
+    rx: /^[A-Z]{2,40}$/,
+    msg: 'Last name must be 2 or more letters'
+  },
+  email: {
+    rx: /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|space|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/,
+    msg: 'Must be a valid email address'
+  },
+  phone: {
+    rx: /^([0-9]{3}-){2}[0-9]{4}$/,
+    msg: 'Must be a 10 digit phone number'
+  }
 }
 
 const asyncValidate = values => {
   return new Promise((resolve, reject) => {
     const keys = Object.keys(userSchema)
     const result = keys.reduce((errObj, key) => {
-      if (!userSchema[key].test(values[key])) {
-        debugger
+      if (!userSchema[key].rx.test(values[key])) {
         if (!values[key]) {
+          //TODO fix this (submit empty form incorrectly shows this for middle name)
           errObj[key] = key + ' is required';
         } else {
-          errObj[key] = 'Validation failed for ' + key;
+          errObj[key] = userSchema[key].msg;
         }
       }
       return errObj
