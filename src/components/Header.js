@@ -9,11 +9,11 @@ const Header = React.createClass({
 
   render() {
     return (
-      <div style={{position: 'fixed', top: 0, height: '3em'}}>
-        <Link to='/new-tenant'>Add new tenant</Link>
-        <span>What's</span>
-        <span>Up</span>
-        <span><button onClick={this.logOut}>Log out</button></span>
+      <div className='ui top fixed menu'>
+        <Link className='item' to='/new-tenant'>Add new tenant</Link>
+        <div className='right menu'>
+          <a className='item' onClick={this.logOut}>Log out</a>
+        </div>
       </div>
     )
   },

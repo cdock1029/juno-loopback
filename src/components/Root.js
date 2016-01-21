@@ -6,16 +6,18 @@ const Root = React.createClass({
 
   render() {
     const {children, location, user} = this.props
-    console.log('Root props:', this.props)
-    console.log('Root rendered - USER: ', this.props.user);
+    //console.log('Root props:', this.props)
+    //console.log('Root rendered - USER: ', this.props.user);
     let header = null
     if (user && location.pathname !== '/login') {
       header = <Header />
     }
     return (
-      <div>
+      <div className='ui container' style={{marginTop: '6em'}}>
         {header}
-        {children}
+        <div>
+          {children}
+        </div>
       </div>
     )
   }

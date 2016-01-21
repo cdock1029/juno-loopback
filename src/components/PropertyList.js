@@ -3,14 +3,10 @@ import { Link } from 'react-router'
 import UnitListContainer from '../containers/UnitListContainer'
 
 export default ({ isFetching, properties }) => (
-  <div style={{marginTop: '4em', width: '15em'}}>
-    <ol>
-      {properties.map(prop =>
-        <li key={prop.id}>
-          <Link to={`/units/${prop.id}`}>{prop.get('name')}</Link>
-        </li>
-      )}
-    </ol>
-    {isFetching && <h2>Fetching....</h2>}
+  <div className='ui link list'>
+    {properties.map(prop =>
+      <Link className='item' key={prop.id} to={`/units/${prop.id}`}>{prop.get('name')}</Link>
+    )}
+    {isFetching && <h2 className='ui header'>Fetching....</h2>}
   </div>
 )

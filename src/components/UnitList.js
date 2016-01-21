@@ -1,14 +1,20 @@
 import React from 'react'
 
 export default ({onClick, units}) => (
-  <ul style={{maxHeight: '20em', overflow: 'scroll'}}>
+  <div className='ui list'>
     {units.map((unit, i) => {
-      return (
-        <li key={i}>
-          {unit.get('unitNumber')}
-          <span>{' '}<button onClick={onClick.bind(null, unit)} style={{color: 'red'}}>X</button></span>
-        </li>
+    return (
+    <div className='item' key={i}>
+      <div className='right floated content'>
+        <div className='ui mini button' onClick={onClick.bind(null, unit)} style={{color: 'red'}}>
+        X
+        </div>
+      </div>
+          <div className='content'>
+            {unit.get('unitNumber')}
+          </div>
+        </div>
       )
     })}
-  </ul>
+  </div>
 )

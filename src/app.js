@@ -9,6 +9,7 @@ import createLogger from 'redux-logger'
 import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute } from 'react-router'
 import { routeReducer, syncHistory } from 'redux-simple-router'
+import { reducer as form } from 'redux-form'
 
 import { juno } from './reducers'
 import createHistory from 'history/lib/createHashHistory'
@@ -19,12 +20,27 @@ import UnitListContainer from './containers/UnitListContainer'
 import LoginContainer from './containers/LoginContainer'
 import CreateTenantContainer from './containers/CreateTenantContainer'
 
+import {
+  toUpperCase,
+  toLowerCase,
+  normalizePhone
+} from './validation'
+
 Parse.initialize(process.env.PARSE_APP_ID, process.env.PARSE_JS_KEY)
 
 const history = createHistory()
 const historyMiddleware = syncHistory(history)
 const reducer = combineReducers({
   juno,
+  form: form.normalize({
+    createTenant: {
+      firstName: toUpperCase,
+      lastName: toUpperCase,
+      middleName: toUpperCase,
+      email: toLowerCase,
+      phone: normalizePhone
+    }
+  }),
   routing: routeReducer
 })
 const createStoreWithMiddleware = applyMiddleware(

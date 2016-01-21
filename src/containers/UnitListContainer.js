@@ -12,7 +12,7 @@ const UnitListContainer = React.createClass({
     const { property, units } = this.props
     return units ? (
       <div>
-        <h4>{property.get('name')}</h4>
+        <h4 className='ui header'>{property.get('name')}</h4>
         <CreateUnitContainer property={property} />
         <UnitList units={units} onClick={this.deleteUnit} />
       </div>
