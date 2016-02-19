@@ -1,21 +1,18 @@
 import Parse from 'parse'
-import { routeActions } from 'redux-simple-router'
+import { routeActions } from 'react-router-redux'
 
 //actions
-export const REQUEST_PROPERTIES = 'REQUEST_PROPERTIES'
+export const SERVER_REQUEST = 'SERVER_REQUEST'
+
 export const RECEIVE_PROPERTIES = 'RECEIVE_PROPERTIES'
-export const UNIT_SAVE = 'UNIT_SAVE'
 export const UNIT_SAVE_SUCCESS = 'UNIT_SAVE_SUCCESS'
-export const UNIT_DELETE = 'UNIT_DELETE'
 export const UNIT_DELETE_SUCCESS = 'UNIT_DELETE_SUCCESS'
-export const LOGOUT_START = 'LOGOUT_START'
 export const LOGOUT_COMPLETE = 'LOGOUT_COMPLETE'
-export const LOGIN_START = 'LOGIN_START'
 export const LOGIN_COMPLETE = 'LOGIN_COMPLETE'
 
-function requestProperties() {
+function initiateServerRequest() {
   return {
-    type: REQUEST_PROPERTIES
+    type: SERVER_REQUEST
   }
 }
 
@@ -27,33 +24,15 @@ function receiveProperties(properties) {
   }
 }
 
-function unitSave() {
-  return {
-    type: UNIT_SAVE
-  }
-}
-
 function unitSaveSuccess() {
   return {
     type: UNIT_SAVE_SUCCESS
   }
 }
 
-function unitDelete() {
-  return {
-    type: UNIT_DELETE
-  }
-}
-
 function unitDeleteSuccess() {
   return {
     type: UNIT_DELETE_SUCCESS
-  }
-}
-
-function loginStart() {
-  return {
-    type: LOGIN_START
   }
 }
 
@@ -65,12 +44,6 @@ function loginComplete({error, user}) {
   }
 }
 
-function logoutStart() {
-  return {
-    type: LOGOUT_START
-  }
-}
-
 function logoutComplete() {
   return {
     type: LOGOUT_COMPLETE
@@ -79,16 +52,7 @@ function logoutComplete() {
 
 export function fetchProperties() {
   return dispatch => {
-    dispatch(requestProperties())
-    /*const request = new Request('https://api.parse.com/1/classes/Property', {
-      headers: {
-        'X-Parse-Application-Id': 'gAnUGUxCjdUA7otkmPulOQgCBerx0JGu7zPjYNB8',
-        'X-Parse-REST-API-Key': '1Pi6eZ5f7YaFwuc5VKYwC7yQI4SrkdgrFcacFlZW'
-      }
-    })
-    return fetch(request)
-      .then(response => response.json())
-      .then(json => dispatch(receiveProperties(json)))*/
+    dispatch(initiateServerRequest())
 
     const Property = Parse.Object.extend('Property')
 
@@ -100,7 +64,7 @@ export function fetchProperties() {
 export function saveUnitToProperty(property, unitNumber) {
   return dispatch => {
 
-    dispatch(unitSave())
+    dispatch(initiateServerRequest())
 
     const unit = (new Parse.Object('Unit'))
       .set('property', property)
@@ -120,7 +84,7 @@ export function saveUnitToProperty(property, unitNumber) {
 
 export function removeUnitFromPropertyAndDelete(property, unit) {
   return dispatch => {
-    dispatch(unitDelete())
+    dispatch(initiateServerRequest())
 
     property.remove('units', unit).save()
       .then(() => unit.destroy())
@@ -134,7 +98,7 @@ export function removeUnitFromPropertyAndDelete(property, unit) {
 
 export function loginUser(username, password) {
   return dispatch => {
-    dispatch(loginStart())
+    dispatch(initiateServerRequest())
 
     Parse.User.logIn(username, password).then(
       user => {
@@ -148,7 +112,7 @@ export function loginUser(username, password) {
 
 export function logoutUser() {
   return dispatch => {
-    dispatch(logoutStart())
+    dispatch(initiateServerRequest())
 
     Parse.User.logOut().then(() => {
       dispatch(logoutComplete())

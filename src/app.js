@@ -8,7 +8,7 @@ import createLogger from 'redux-logger'
 
 import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute } from 'react-router'
-import { routeReducer, syncHistory } from 'redux-simple-router'
+import { routeReducer, syncHistory } from 'react-router-redux'
 import { reducer as form } from 'redux-form'
 
 import { juno } from './reducers'

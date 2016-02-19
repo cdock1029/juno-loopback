@@ -1,14 +1,10 @@
 import Parse from 'parse'
 import {
-  REQUEST_PROPERTIES,
+  SERVER_REQUEST,
   RECEIVE_PROPERTIES,
-  UNIT_SAVE,
   UNIT_SAVE_SUCCESS,
-  UNIT_DELETE,
   UNIT_DELETE_SUCCESS,
-  LOGIN_START,
   LOGIN_COMPLETE,
-  LOGOUT_START,
   LOGOUT_COMPLETE
 } from '../actions'
 
@@ -19,7 +15,7 @@ function juno(state = {
   user: Parse.User.current()
 }, action) {
   switch (action.type) {
-    case REQUEST_PROPERTIES:
+    case SERVER_REQUEST:
       return {
         ...state,
         isFetching: true
@@ -31,30 +27,15 @@ function juno(state = {
         properties: action.properties,
         lastUpdated: action.receivedAt
       }
-    case UNIT_SAVE:
-      return {
-        ...state,
-        isFetching: true
-      }
     case UNIT_SAVE_SUCCESS:
       return {
         ...state,
         isFetching: false
       }
-    case UNIT_DELETE:
-      return {
-        ...state,
-        isFetching: true
-      }
     case UNIT_DELETE_SUCCESS:
       return {
         ...state,
         isFetching: false
-      }
-    case LOGIN_START:
-      return {
-        ...state,
-        isFetching: true
       }
     case LOGIN_COMPLETE:
       return {
