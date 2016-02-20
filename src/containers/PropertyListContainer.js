@@ -15,9 +15,13 @@ const PropertyListContainer = React.createClass({
 
   render() {
     return (
-      <div>
-        <button className='ui tiny button' onClick={()=> this.props.dispatch(fetchProperties())}>{'\u21bb' + ' ' + 'Refresh'}</button>
-        <PropertyList {...this.props} />
+      <div className='ui grid'>
+        <div className='row'>
+          <button className='ui tiny button' onClick={()=> this.props.dispatch(fetchProperties())}>{'\u21bb' + ' ' + 'Refresh'}</button>
+        </div>
+        <div className='row'>
+          <PropertyList {...this.props} />
+        </div>
       </div>
     )
   }

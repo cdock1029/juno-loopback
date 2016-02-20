@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import UnitListContainer from '../containers/UnitListContainer'
 
 export default ({ isFetching, properties }) => (
-  <div className='ui link list'>
+  <div className='ui relaxed divided link list'>
     {properties.map(prop =>
       <Link className='item' key={prop.id} to={`/units/${prop.id}`}>{prop.get('name')}</Link>
     )}

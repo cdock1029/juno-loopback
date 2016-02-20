@@ -56,7 +56,10 @@ export function fetchProperties() {
 
     const Property = Parse.Object.extend('Property')
 
-    return (new Parse.Query(Property)).include('units').find()
+    return (new Parse.Query(Property))
+      .ascending('name')
+      .include('units')
+      .find()
       .then(properties => dispatch(receiveProperties(properties)))
   }
 }

@@ -15,9 +15,7 @@ const Root = React.createClass({
     return (
       <div className='ui container' style={{marginTop: '6em'}}>
         {header}
-        <div>
-          {children}
-        </div>
+        {children}
       </div>
     )
   }
