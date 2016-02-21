@@ -1,52 +1,91 @@
-import Parse from 'parse'
+'use strict';
+
+import Parse from '../parse'
+import { routerReducer as routing } from 'react-router-redux'
+import { combineReducers } from 'redux'
+import { reducer as form } from 'redux-form'
 import {
-  SERVER_REQUEST,
-  RECEIVE_PROPERTIES,
-  UNIT_SAVE_SUCCESS,
-  UNIT_DELETE_SUCCESS,
-  LOGIN_COMPLETE,
-  LOGOUT_COMPLETE
+  toUpperCase,
+  toLowerCase,
+  normalizePhone
+} from '../validation'
+
+
+import {
+  PROPERTIES_REQUEST,
+  PROPERTIES_SUCCESS,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LIST_FETCH_REQUEST,
+  LIST_FETCH_SUCCESS,
+  LIST_FETCH_ERROR
 } from '../actions'
 
 //reducers
 function juno(state = {
   isFetching: false,
   properties: [],
-  user: Parse.User.current()
+  user: Parse.User.current(),
+  error: null
 }, action) {
   switch (action.type) {
-    case SERVER_REQUEST:
+    case PROPERTIES_REQUEST:
       return {
         ...state,
         isFetching: true
       }
-    case RECEIVE_PROPERTIES:
+    case PROPERTIES_SUCCESS:
       return {
         ...state,
         isFetching: false,
         properties: action.properties,
         lastUpdated: action.receivedAt
       }
-    case UNIT_SAVE_SUCCESS:
+    case LIST_FETCH_REQUEST:
+      return {
+        ...state,
+        isFetching: true
+      }
+    case LIST_FETCH_SUCCESS:
       return {
         ...state,
         isFetching: false
       }
-    case UNIT_DELETE_SUCCESS:
-      return {
-        ...state,
-        isFetching: false
-      }
-    case LOGIN_COMPLETE:
+    case LIST_FETCH_ERROR:
       return {
         ...state,
         isFetching: false,
-        error: action.error,
-        user: action.user
+        error: action.error
       }
-    case LOGOUT_COMPLETE:
+    case LOGIN_REQUEST:
       return {
         ...state,
+        isFetching: true
+      }
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        user: action.user
+      }
+    case LOGIN_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.error
+      }
+    case LOGOUT_REQUEST:
+      return {
+        ...state,
+        isFetching: true
+      }
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
         user: null
       }
     default:
@@ -54,4 +93,18 @@ function juno(state = {
   }
 }
 
-module.exports = { juno }
+
+
+export default combineReducers({
+  juno,
+  form: form.normalize({
+    createTenant: {
+      firstName: toUpperCase,
+      lastName: toUpperCase,
+      middleName: toUpperCase,
+      email: toLowerCase,
+      phone: normalizePhone
+    }
+  }),
+  routing
+})

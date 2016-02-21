@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 const Root = React.createClass({
 
   render() {
-    const {children, location, user} = this.props
-    //console.log('Root props:', this.props)
+    const {children, error, isFetching, location, user} = this.props
+    console.log('Root props:', this.props)
     //console.log('Root rendered - USER: ', this.props.user);
     let header = null
     if (user && location.pathname !== '/login') {
@@ -16,11 +16,13 @@ const Root = React.createClass({
       <div className='ui container' style={{marginTop: '6em'}}>
         {header}
         {children}
+        {isFetching && <h2 className='ui header'>Fetching....</h2>}
+        {error ? <h1>{error}</h1> : null}
       </div>
     )
   }
 })
 
-export default connect(({juno: {user}}) => {
-  return {user}
+export default connect(({juno: {user, isFetching, error}}) => {
+  return {isFetching, user, error}
 })(Root)

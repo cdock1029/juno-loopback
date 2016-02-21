@@ -1,34 +1,53 @@
 import React from 'react'
 import Parse from 'parse'
 import {connect} from 'react-redux'
-import { removeUnitFromPropertyAndDelete } from '../actions'
+import {fetchListIfNeeded} from '../actions'
 
-import CreateUnitContainer from '../containers/CreateUnitContainer'
 import UnitList from '../components/UnitList'
+import EntitySelector from './EntitySelector'
 
 const UnitListContainer = React.createClass({
 
-  render() {
-    const { property, units } = this.props
-    return units ? (
-      <div>
-        <h4 className='ui header'>{property.get('name')}</h4>
-        <CreateUnitContainer property={property} />
-        <UnitList units={units} onClick={this.deleteUnit} />
-      </div>
-    ) : null
+  componentWillMount() {
+    console.log('UnitListContainer - componentWillMount')
+    this.fetchUnits(this.props)
   },
 
-  deleteUnit(unit) {
-    const {dispatch, property} = this.props
-    dispatch(removeUnitFromPropertyAndDelete(property, unit))
+  componentWillReceiveProps(nextProps) {
+    console.log('UnitListContainer - componentWillReceiveProps:', nextProps.units)
+    this.fetchUnits(nextProps)
+  },
+
+  render() {
+    console.log('UnitListContainer - render')
+    const { units } = this.props
+    return units ?
+      <UnitList units={units} />
+      : null
+  },
+
+  fetchUnits(props) {
+    if (props.units) {
+      debugger
+      props.dispatch(props.fetchListIfNeeded(props.units))
+    }
   }
 
 })
 
 export default connect(({juno: { properties }}, ownProps) => {
-  const id = ownProps.params.id;
-  const property = properties.filter(prop => prop.id === id).shift()
-  const units = property.get('units');
-  return { property, units };
+  console.log('UnitListContainer - connect(..)')
+  let units = null
+  if (properties.length) {
+    const propertyId = ownProps.params.propertyId
+    const buildingId = ownProps.params.buildingId
+    const property = properties.filter(prop => prop.id === propertyId).shift()
+    const building = property.get('buildings').filter(
+      b => b.id === buildingId
+    ).shift()
+
+    units = building.get('units');
+    debugger
+  }
+  return { fetchListIfNeeded, units };
 })(UnitListContainer)

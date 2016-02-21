@@ -1,77 +1,63 @@
+'use strict'
+
+import Parse from './parse'
+
 import React from 'react'
 import { render } from 'react-dom'
-import Parse from 'parse'
 
-import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
-import thunkMiddleware from 'redux-thunk'
-import createLogger from 'redux-logger'
+import configureStore from './store'
 
 import { Provider } from 'react-redux'
-import { Router, Route, IndexRoute } from 'react-router'
-import { routeReducer, syncHistory } from 'react-router-redux'
-import { reducer as form } from 'redux-form'
-
-import { juno } from './reducers'
-import createHistory from 'history/lib/createHashHistory'
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
 
 import Root from './components/Root'
 import PropertyListContainer from './containers/PropertyListContainer'
+import BuildingListContainer from './containers/BuildingListContainer'
 import UnitListContainer from './containers/UnitListContainer'
 import LoginContainer from './containers/LoginContainer'
 import CreateTenantContainer from './containers/CreateTenantContainer'
 
-import {
-  toUpperCase,
-  toLowerCase,
-  normalizePhone
-} from './validation'
+import EntitySelectionContainer from './containers/EntitySelectionContainer'
+import EntitySelector from './containers/EntitySelector'
 
-Parse.initialize(process.env.PARSE_APP_ID, process.env.PARSE_JS_KEY)
+import {fetchProperties} from './actions'
 
-const history = createHistory()
-const historyMiddleware = syncHistory(history)
-const reducer = combineReducers({
-  juno,
-  form: form.normalize({
-    createTenant: {
-      firstName: toUpperCase,
-      lastName: toUpperCase,
-      middleName: toUpperCase,
-      email: toLowerCase,
-      phone: normalizePhone
-    }
-  }),
-  routing: routeReducer
-})
-const createStoreWithMiddleware = applyMiddleware(
-  thunkMiddleware,
-  historyMiddleware,
-  createLogger()
-)(createStore)
-
-const store = ((initialState) => {
-  return createStoreWithMiddleware(reducer, initialState)
-})()
-
-historyMiddleware.listenForReplays(store)
+const store = configureStore()
+const history = syncHistoryWithStore(browserHistory, store)
 
 function requireAuth(nextState, replace) {
   if (!Parse.User.current()) {
-    replace({
-      nextPathname: nextState.location.pathname,
-    }, '/login')
+    replace('/login')
   }
 }
 
+store.dispatch(fetchProperties())
+
+const NotFound = React.createClass({
+  render() {
+    return (<div>Not Found</div>)
+  }
+})
+
 render((
   <Provider store={store}>
+    <div>
     <Router history={history}>
-      <Route path="/" component={Root}>
-        <IndexRoute component={PropertyListContainer} onEnter={requireAuth} />
-        <Route path="login" component={LoginContainer} />
-        <Route path="units/:id" component={UnitListContainer} onEnter={requireAuth} />
-        <Route path="new-tenant" component={CreateTenantContainer} onEnter={requireAuth} />
+      <Route component={Root}>
+        <Route path="/" component={EntitySelectionContainer} onEnter={requireAuth}>
+          <IndexRoute component={EntitySelector} />
+          <Route
+            path=":propertyId/buildings"
+            component={EntitySelector}/>
+          <Route
+            path=":propertyId/buildings/:buildingId/units"
+            component={EntitySelector} />
+        </Route>
+        <Route path="/login" component={LoginContainer} />
       </Route>
+      <Route path="*" component={NotFound}/>
     </Router>
+    </div>
   </Provider>
   ),document.getElementById('app'))
