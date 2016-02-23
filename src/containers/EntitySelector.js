@@ -27,7 +27,7 @@ const EntitySelector = React.createClass({
     return (
       <div className='ui four column grid'>
         <div className='row'>
-            <EntityList title={'Properties'}>
+            <EntityList title={'Property'}>
               {properties.map((item, i) => {
                 const text = item.get('name')
                 return (
@@ -40,7 +40,7 @@ const EntitySelector = React.createClass({
               })}
             </EntityList>
             {buildings ?
-              (<EntityList title={'Buildings'}>
+              (<EntityList title={'Building'}>
                 {buildings.map((item, i) => {
                   const text = item.get('address')
                   return (
@@ -54,16 +54,18 @@ const EntitySelector = React.createClass({
               </EntityList>)
               : null}
             {units ?
-              (<EntityList title={'Units'}>
-                {units.map((item, i) => {
-                  const text = item.get('number')
-                  return (
-                    <EntityListItem
-                      key={i}
-                      active={params.unitId === item.id}
-                      path={`/${propertyId}/buildings/${buildingId}/units/${item.id}`}
-                      text={text} />
-                  )
+              (<EntityList title={'Unit'}>
+                {units
+                  .sort((a,b) => a.get('number') - b.get('number'))
+                  .map((item, i) => {
+                    const text = item.get('number')
+                    return (
+                      <EntityListItem
+                        key={i}
+                        active={params.unitId === item.id}
+                        path={`/${propertyId}/buildings/${buildingId}/units/${item.id}`}
+                        text={text} />
+                    )
                 })}
               </EntityList>)
               : null}

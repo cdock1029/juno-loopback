@@ -2,7 +2,7 @@ import React from 'react'
 
 export default ({children, title}) => (
   <div className='column'>
-    <h2 className='ui header'>{title}</h2>
+    <h3 className='ui header'>{title}</h3>
     <div className='ui relaxed divided link list'>
       {children}
     </div>

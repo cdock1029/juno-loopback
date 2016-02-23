@@ -37,6 +37,17 @@ export function fetchProperties() {
   }
 }
 
+export const TENANT_REQUEST = 'TENANT_REQUEST'
+export const TENANT_SUCCESS = 'TENANT_SUCCESS'
+export const TENANT_ERROR = 'TENANT_ERROR'
+
+
+export function fetchTenantsForUnits() {
+  return (dispatch, getState) => {
+
+  }
+}
+
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_ERROR = 'LOGIN_ERROR'
