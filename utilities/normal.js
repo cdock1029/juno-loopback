@@ -48,7 +48,7 @@ const headers = {
   'X-Parse-REST-API-Key': process.env.PARSE_REST_KEY
 }
 
-const uri = 'https://api.parse.com/1/classes/Property/D64k4fx293'
+const uri = 'https://api.parse.com/1/classes/Property'
 
 const qs = { include: 'buildings.units.leases.tenants' }
 
@@ -63,7 +63,7 @@ const options = {
 rp(options)
   .then(res => {
    
-    let properties = {properties: [res]}
+    let properties = {properties: (res.results)}
     //console.log(JSON.stringify(properties))
     const response = normalize(properties, {
       properties: arrayOf(property)

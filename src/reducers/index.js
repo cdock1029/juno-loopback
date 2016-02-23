@@ -21,7 +21,10 @@ import {
   LOGOUT_SUCCESS,
   LIST_FETCH_REQUEST,
   LIST_FETCH_SUCCESS,
-  LIST_FETCH_ERROR
+  LIST_FETCH_ERROR,
+  FETCH_REQUEST,
+  FETCH_SUCCESS,
+  FETCH_ERROR
 } from '../actions'
 
 //reducers
@@ -93,10 +96,42 @@ function juno(state = {
   }
 }
 
+function data(state = {
+  
+}, action) {
+  switch (action.type) {
+    case FETCH_REQUEST:
+      return {
+        ...state,
+        isFetching: true
+      }
+    case FETCH_SUCCESS:
+      console.log('state:')
+      console.log(state)
+      console.log('action.data')
+      console.log(action.data)
+      return {
+        ...state,
+        ...action.data,
+        isFetching: false
+      }
+    case FETCH_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.error
+      }
+    default:
+      return state
+  }
+
+}
+
 
 
 export default combineReducers({
   juno,
+  data,
   form: form.normalize({
     createTenant: {
       firstName: toUpperCase,

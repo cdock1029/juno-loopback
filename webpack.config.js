@@ -14,7 +14,8 @@ module.exports = {
   plugins: [
     new webpack.EnvironmentPlugin([
       'PARSE_APP_ID',
-      'PARSE_JS_KEY'
+      'PARSE_JS_KEY',
+      'PARSE_REST_KEY'
     ])
   ],
   module: {

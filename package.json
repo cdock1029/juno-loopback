@@ -28,6 +28,7 @@
     "classnames": "^2.2.3",
     "normalizr": "^2.0.0",
     "parse": "^1.7.1",
+    "qs": "^6.1.0",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-redux": "^4.4.0",

@@ -2,6 +2,48 @@
 
 import Parse from '../parse'
 import { routeActions } from 'react-router-redux'
+import {fetchDataApi} from '../api'
+
+export const FETCH_REQUEST = 'FETCH_REQUEST'
+export const FETCH_SUCCESS = 'FETCH_SUCCESS'
+export const FETCH_ERROR = 'FETCH_ERROR'
+
+function fetchRequest() {
+  return {
+    type: FETCH_REQUEST
+  }
+}
+
+function fetchSuccess(data) {
+  return {
+    type: FETCH_SUCCESS,
+    data
+  }
+}
+
+function fetchError(error) {
+  return {
+    type: FETCH_ERROR,
+    error
+  }
+}
+
+export function fetchData() {
+
+  return dispatch => {
+    dispatch(fetchRequest)
+
+    fetchDataApi()
+      .then(data => {
+        console.log('success')
+        console.log(data)
+        dispatch(fetchSuccess(data))
+      }, err => {
+        dispatch(fetchError(err.message))
+      })
+  }
+
+}
 
 //actions
 export const PROPERTIES_REQUEST = 'PROPERTIES_REQUEST'
@@ -20,6 +62,7 @@ function propertiesSuccess(properties) {
     receivedAt: Date.now()
   }
 }
+
 
 /**
 * Get Property list from server

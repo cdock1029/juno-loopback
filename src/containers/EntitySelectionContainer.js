@@ -1,14 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchProperties } from '../actions'
+import { fetchData } from '../actions'
 
 const EntitySelectionContainer = React.createClass({
 
   componentWillMount() {
-    /*const props = this.props
-    if (!props.properties.length) {
-      props.dispatch(props.fetchProperties())
-    }*/
+    const {dispatch, fetchData} = this.props
+    dispatch(fetchData)
   },
 
   render() {
@@ -23,6 +21,6 @@ const EntitySelectionContainer = React.createClass({
 export default connect(({ juno: { properties } }) => {
   return {
     properties,
-    fetchProperties
+    fetchData
   }
 })(EntitySelectionContainer)

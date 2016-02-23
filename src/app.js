@@ -21,7 +21,10 @@ import CreateTenantContainer from './containers/CreateTenantContainer'
 import EntitySelectionContainer from './containers/EntitySelectionContainer'
 import EntitySelector from './containers/EntitySelector'
 
-import {fetchProperties} from './actions'
+import Tester from './containers/Tester'
+
+//import {fetchProperties} from './actions'
+import {fetchData} from './actions'
 
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store)
@@ -32,7 +35,7 @@ function requireAuth(nextState, replace) {
   }
 }
 
-store.dispatch(fetchProperties())
+store.dispatch(fetchData())
 
 const NotFound = React.createClass({
   render() {
@@ -45,7 +48,7 @@ render((
     <div>
     <Router history={history}>
       <Route component={Root}>
-        <Route path="/" component={EntitySelectionContainer} onEnter={requireAuth}>
+        <Route path="/" component={Tester/*EntitySelectionContainer*/} onEnter={requireAuth}>
           <IndexRoute component={EntitySelector} />
           <Route
             path=":propertyId/buildings"

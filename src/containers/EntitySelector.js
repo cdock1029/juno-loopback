@@ -1,7 +1,6 @@
 import React from 'react'
 import EntityList from '../components/EntityList'
 import EntityListItem from '../components/EntityListItem'
-import { fetchListIfNeeded } from '../actions'
 
 import { connect } from 'react-redux'
 
@@ -9,17 +8,9 @@ import { connect } from 'react-redux'
 const EntitySelector = React.createClass({
 
   componentWillReceiveProps(nextProps) {
-    /*const nextBuildingId = nextProps.params.buildingId
-    const currBuildingId = this.props.params.buildingId
-    if (nextBuildingId !== currBuildingId && nextBuildingId !== null) {
-      console.log('EntitySelector - componentWillReceiveProps New buildingId')
-      console.log(`currBuildingId: ${currBuildingId}, nextBuildingId: ${nextBuildingId}`)
-      const {dispatch, units} = this.props
-      debugger
-      dispatch(fetchListIfNeeded(units))
-    }*/
+
   },
-  //will show 1 to 4 EntityList(s)
+
   render() {
     const location = this.props.location.pathname
     const {buildings, params, properties, units} = this.props
@@ -89,24 +80,21 @@ const EntitySelector = React.createClass({
 
 })
 
-export default connect(({ juno: { properties } }, ownProps) => {
-  console.log('EntitySelector - connect')
-  let buildings, units = null;
+export default connect(({ data: { entities, result } }, ownProps) => {
+
+  let {allProperties, allBuildings, allUnits} = entities;
+
   //if we've navigated to specific property
-  if (properties.length && ownProps.params.propertyId) {
+  if (allProperties && ownProps.params.propertyId) {
     const {propertyId} = ownProps.params
-    const property = properties.filter(
-      prop => prop.id === propertyId
-    ).shift()
-    buildings = property.get('buildings')
+    const property = properties[propertyId]
+     = property.buildings.map(id => )
   }
   //if we've navigated to specific building
-  if (buildings && buildings.length && ownProps.params.buildingId) {
+  if (buildings && ownProps.params.buildingId) {
     const {buildingId} = ownProps.params
-    const building = buildings.filter(
-      b => b.id === buildingId
-    ).shift()
-    units = building.get('units')
+    const building = buildings[buildingId]
+    units = building.units
   }
   return {
     buildings,
