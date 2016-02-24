@@ -6,8 +6,6 @@ const Root = React.createClass({
 
   render() {
     const {children, error, isFetching, location, user} = this.props
-    console.log('Root props:', this.props)
-    //console.log('Root rendered - USER: ', this.props.user);
     let header = null
     if (user && location.pathname !== '/login') {
       header = <Header />

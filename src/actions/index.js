@@ -35,8 +35,7 @@ export function fetchData() {
 
     fetchDataApi()
       .then(data => {
-        console.log('success')
-        console.log(data)
+        //console.log('fetchData success')
         dispatch(fetchSuccess(data))
       }, err => {
         dispatch(fetchError(err.message))

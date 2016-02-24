@@ -45,7 +45,7 @@ const headers = {
   'X-Parse-REST-API-Key': process.env.PARSE_REST_KEY
 }
 
-const qstr = qs.stringify({ include: 'buildings.units.leases.tenants' })
+const qstr = qs.stringify({ include: 'buildings.units' })
 const uri = `https://api.parse.com/1/classes/Property?${qstr}`
 
 const options = {
@@ -58,7 +58,7 @@ export function fetchDataApi() {
     fetch(uri, options)
       .then(res => {
         return res.json().then(json => {
-          console.log('Raw result:', json)
+          //console.log('Raw result:', json)
           let properties = {properties: (json.results)}
           const response = normalize(properties, {
             properties: arrayOf(property)

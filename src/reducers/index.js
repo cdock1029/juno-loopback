@@ -97,7 +97,7 @@ function juno(state = {
 }
 
 function data(state = {
-  
+
 }, action) {
   switch (action.type) {
     case FETCH_REQUEST:
@@ -106,10 +106,6 @@ function data(state = {
         isFetching: true
       }
     case FETCH_SUCCESS:
-      console.log('state:')
-      console.log(state)
-      console.log('action.data')
-      console.log(action.data)
       return {
         ...state,
         ...action.data,

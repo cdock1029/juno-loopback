@@ -1,53 +1,50 @@
 import React from 'react'
-import Parse from 'parse'
-import {connect} from 'react-redux'
-import {fetchListIfNeeded} from '../actions'
+import EntityList from '../components/EntityList'
+import EntityListItem from '../components/EntityListItem'
 
-import UnitList from '../components/UnitList'
-import EntitySelector from './EntitySelector'
+import { connect } from 'react-redux'
 
 const UnitListContainer = React.createClass({
 
   componentWillMount() {
-    console.log('UnitListContainer - componentWillMount')
-    this.fetchUnits(this.props)
-  },
-
-  componentWillReceiveProps(nextProps) {
-    console.log('UnitListContainer - componentWillReceiveProps:', nextProps.units)
-    this.fetchUnits(nextProps)
+    //TODO need to fetch units here?
   },
 
   render() {
-    console.log('UnitListContainer - render')
-    const { units } = this.props
-    return units ?
-      <UnitList units={units} />
-      : null
-  },
-
-  fetchUnits(props) {
-    if (props.units) {
-      debugger
-      props.dispatch(props.fetchListIfNeeded(props.units))
-    }
+    const {
+      buildingId,
+      propertyId,
+      unitId,
+      unitEntities,
+      unitIdList
+    } = this.props
+    return (
+      <EntityList title={'Unit'}>
+        {unitIdList && unitIdList
+          .sort((a,b) => unitEntities[a].number - unitEntities[b].number)
+          .map((id) => {
+          return (
+            <EntityListItem
+              key={id}
+              active={unitId === id}
+              path={`/${propertyId}/buildings/${unitId}/units/${id}`}
+              text={unitEntities[id].number} />
+          )
+        })}
+      </EntityList>
+    )
   }
 
 })
 
-export default connect(({juno: { properties }}, ownProps) => {
-  console.log('UnitListContainer - connect(..)')
-  let units = null
-  if (properties.length) {
-    const propertyId = ownProps.params.propertyId
-    const buildingId = ownProps.params.buildingId
-    const property = properties.filter(prop => prop.id === propertyId).shift()
-    const building = property.get('buildings').filter(
-      b => b.id === buildingId
-    ).shift()
-
-    units = building.get('units');
-    debugger
+export default connect(({ data: { entities, result } }, { buildingId, propertyId }) => {
+  let unitEntities, unitIdList;
+  if (entities && result) {
+    unitEntities = entities.units
+    unitIdList = entities.buildings[buildingId].units
   }
-  return { fetchListIfNeeded, units };
+  return {
+    unitEntities,
+    unitIdList
+  }
 })(UnitListContainer)

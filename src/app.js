@@ -35,8 +35,6 @@ function requireAuth(nextState, replace) {
   }
 }
 
-store.dispatch(fetchData())
-
 const NotFound = React.createClass({
   render() {
     return (<div>Not Found</div>)
@@ -48,7 +46,7 @@ render((
     <div>
     <Router history={history}>
       <Route component={Root}>
-        <Route path="/" component={Tester/*EntitySelectionContainer*/} onEnter={requireAuth}>
+        <Route path="/" component={EntitySelectionContainer} onEnter={requireAuth}>
           <IndexRoute component={EntitySelector} />
           <Route
             path=":propertyId/buildings"
