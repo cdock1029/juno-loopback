@@ -1,7 +1,7 @@
 'use strict';
 
 import Parse from '../parse'
-import { routeActions } from 'react-router-redux'
+import {browserHistory} from 'react-router'
 import {fetchDataApi} from '../api'
 
 export const FETCH_REQUEST = 'FETCH_REQUEST'
@@ -125,7 +125,7 @@ export function loginUser(username, password) {
     Parse.User.logIn(username, password).then(
       user => {
         dispatch(loginSuccess(user))
-        dispatch(routeActions.replace('/'))
+        browserHistory.replace('/')
       },
       error => dispatch(loginError(error))
     )
@@ -157,7 +157,7 @@ export function logoutUser() {
 
     Parse.User.logOut().then(() => {
       dispatch(logoutSuccess())
-      dispatch(routeActions.push('/login'))
+      browserHistory.push('/login')
     })
   }
 }

@@ -3,13 +3,13 @@ const webpack = require('webpack');
 module.exports = {
   entry: ['./src/app.js'],
   output: {
-    path: __dirname + '/ParseCloud/public',
+    path: __dirname + '/public',
     publicPath: '/',
     filename: 'bundle.js'
   },
   devtool: 'source-map',
   devServer: {
-    contentBase: './ParseCloud/public'
+    contentBase: './public'
   },
   plugins: [
     new webpack.EnvironmentPlugin([

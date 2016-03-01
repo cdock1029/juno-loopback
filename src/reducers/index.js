@@ -1,7 +1,6 @@
 'use strict';
 
 import Parse from '../parse'
-import { routerReducer as routing } from 'react-router-redux'
 import { combineReducers } from 'redux'
 import { reducer as form } from 'redux-form'
 import {
@@ -136,6 +135,5 @@ export default combineReducers({
       email: toLowerCase,
       phone: normalizePhone
     }
-  }),
-  routing
+  })
 })

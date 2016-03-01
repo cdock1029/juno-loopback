@@ -9,9 +9,10 @@ import configureStore from './store'
 
 import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
 
 import Root from './components/Root'
+import NotFound from './components/NotFound'
+
 import PropertyListContainer from './containers/PropertyListContainer'
 import BuildingListContainer from './containers/BuildingListContainer'
 import UnitListContainer from './containers/UnitListContainer'
@@ -21,13 +22,9 @@ import CreateTenantContainer from './containers/CreateTenantContainer'
 import EntitySelectionContainer from './containers/EntitySelectionContainer'
 import EntitySelector from './containers/EntitySelector'
 
-import Tester from './containers/Tester'
-
-//import {fetchProperties} from './actions'
 import {fetchData} from './actions'
 
 const store = configureStore()
-const history = syncHistoryWithStore(browserHistory, store)
 
 function requireAuth(nextState, replace) {
   if (!Parse.User.current()) {
@@ -35,16 +32,15 @@ function requireAuth(nextState, replace) {
   }
 }
 
-const NotFound = React.createClass({
-  render() {
-    return (<div>Not Found</div>)
+function redirectLoggedIn(nextState, replace) {
+  if (Parse.User.current()) {
+    replace('/')
   }
-})
+}
 
 render((
   <Provider store={store}>
-    <div>
-    <Router history={history}>
+    <Router history={browserHistory}>
       <Route component={Root}>
         <Route path="/" component={EntitySelectionContainer} onEnter={requireAuth}>
           <IndexRoute component={EntitySelector} />
@@ -55,10 +51,9 @@ render((
             path=":propertyId/buildings/:buildingId/units"
             component={EntitySelector} />
         </Route>
-        <Route path="/login" component={LoginContainer} />
+        <Route path="/login" component={LoginContainer} onEnter={redirectLoggedIn} />
       </Route>
       <Route path="*" component={NotFound}/>
     </Router>
-    </div>
   </Provider>
   ),document.getElementById('app'))

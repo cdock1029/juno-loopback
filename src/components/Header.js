@@ -23,7 +23,6 @@ const Header = React.createClass({
   logOut(e) {
     e.preventDefault()
     this.props.dispatch(logoutUser())
-    //Parse.User.logOut().then(() => this.props.dispatch(routeActions.push('/login')))
   }
 
 })

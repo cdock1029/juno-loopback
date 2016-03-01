@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "dev": "webpack-dev-server --progress --colors --host 0.0.0.0 --inline --content-base ./ParseCloud/public --history-api-fallback"
+    "dev": "webpack-dev-server --progress --colors --host 0.0.0.0 --inline --content-base ./public --history-api-fallback"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,6 @@
     "react-dom": "^0.14.7",
     "react-redux": "^4.4.0",
     "react-router": "^2.0.0",
-    "react-router-redux": "^4.0.0-rc.2",
     "redux": "^3.3.1",
     "redux-devtools": "^3.1.1",
     "redux-form": "^4.2.0",
