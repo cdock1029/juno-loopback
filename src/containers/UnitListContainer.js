@@ -4,31 +4,51 @@ import EntityListItem from '../components/EntityListItem'
 
 import { connect } from 'react-redux'
 
+import {fetchUnitsForBuilding} from '../actions'
+
 const UnitListContainer = React.createClass({
 
   componentWillMount() {
-    //TODO need to fetch units here?
+    const {buildingId, dispatch, fetchUnitsForBuilding} = this.props
+    dispatch(fetchUnitsForBuilding(buildingId))
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.buildingId !== nextProps.buildingId) {
+      this.props.dispatch(this.props.fetchUnitsForBuilding(nextProps.buildingId))
+    }
   },
 
   render() {
     const {
-      buildingId,
+      leaseEntities,
+      tenantEntities,
       propertyId,
+      buildingId,
       unitId,
       unitEntities,
       unitIdList
     } = this.props
     return (
-      <EntityList title={'Unit'}>
-        {unitIdList && unitIdList
+      <EntityList
+        title={'Unit'}
+        size='eight wide mobile four wide tablet three wide computer'>
+        {unitIdList
           .sort((a,b) => unitEntities[a].number - unitEntities[b].number)
           .map((id) => {
-          return (
-            <EntityListItem
-              key={id}
-              active={unitId === id}
-              path={`/${propertyId}/buildings/${unitId}/units/${id}`}
-              text={unitEntities[id].number} />
+            const unit = unitEntities[id]
+            //last item in unit.leases array...
+            const lease = unit.leases && leaseEntities[unit.leases.slice(-1).pop()]
+            //tenant
+            const tenants = lease && lease.tenants.map(tId => tenantEntities[tId])
+            return (
+              <EntityListItem
+                key={id}
+                active={unitId === id}
+                path={`/${propertyId}/buildings/${buildingId}/units/${id}`}
+                text={
+                  `${unit.number}\u00a0\u00a0\u00a0\u00a0${tenants ? tenants.map(t => `${t.firstName} ${t.lastName}`) : ''}`
+                } />
           )
         })}
       </EntityList>
@@ -37,14 +57,19 @@ const UnitListContainer = React.createClass({
 
 })
 
-export default connect(({ data: { entities, result } }, { buildingId, propertyId }) => {
-  let unitEntities, unitIdList;
-  if (entities && result) {
-    unitEntities = entities.units
-    unitIdList = entities.buildings[buildingId].units
+export default connect(({
+  data: { units: unitIdList },
+  entities: {
+    leases: leaseEntities,
+    tenants: tenantEntities,
+    units: unitEntities,
   }
+}, { buildingId, propertyId }) => {
   return {
-    unitEntities,
-    unitIdList
+    fetchUnitsForBuilding,
+    unitIdList,
+    leaseEntities,
+    tenantEntities,
+    unitEntities
   }
 })(UnitListContainer)

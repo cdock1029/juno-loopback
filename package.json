@@ -26,15 +26,16 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
     "classnames": "^2.2.3",
+    "json-loader": "^0.5.4",
     "normalizr": "^2.0.0",
     "parse": "^1.7.1",
     "qs": "^6.1.0",
     "react": "^0.14.7",
+    "react-addons-css-transition-group": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-redux": "^4.4.0",
     "react-router": "^2.0.0",
     "redux": "^3.3.1",
-    "redux-devtools": "^3.1.1",
     "redux-form": "^4.2.0",
     "redux-logger": "^2.5.2",
     "redux-thunk": "^1.0.3",
@@ -44,8 +45,6 @@
     "webpack-dev-server": "^1.14.1"
   },
   "devDependencies": {
-    "lodash.range": "^3.1.2",
-    "redux-devtools-dock-monitor": "^1.1.0",
-    "redux-devtools-log-monitor": "^1.0.4"
+    "lodash.range": "^3.1.2"
   }
 }

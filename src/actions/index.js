@@ -2,115 +2,118 @@
 
 import Parse from '../parse'
 import {browserHistory} from 'react-router'
-import {fetchDataApi} from '../api'
+import {fetchDataApi, fetchUnits} from '../api'
 
-export const FETCH_REQUEST = 'FETCH_REQUEST'
-export const FETCH_SUCCESS = 'FETCH_SUCCESS'
-export const FETCH_ERROR = 'FETCH_ERROR'
+export const FETCH_START = 'FETCH_START'
+export const FETCH_STOP = 'FETCH_STOP'
+export const ADD_MESSAGE = 'ADD_MESSAGE'
+export const DISMISS_MESSAGE = 'DISMISS_MESSAGE'
+export const CLEAR_MESSAGES = 'CLEAR_MESSAGES'
 
-function fetchRequest() {
+function fetchStart() {
+  return { type: FETCH_START }
+}
+
+function fetchStop() {
+  return { type: FETCH_STOP }
+}
+
+function addMessage(message, type) {
   return {
-    type: FETCH_REQUEST
+    type: ADD_MESSAGE,
+    payload: {
+      message,
+      type
+    }
   }
 }
 
-function fetchSuccess(data) {
+export function dismissMessage(i) {
   return {
-    type: FETCH_SUCCESS,
-    data
+    type: DISMISS_MESSAGE,
+    index: i
   }
 }
 
-function fetchError(error) {
+export function clearMessages() {
+  return { type: CLEAR_MESSAGES }
+}
+
+
+export const RECEIVE_PROPERTIES = 'RECEIVE_PROPERTIES'
+
+function receiveProperties(data) {
   return {
-    type: FETCH_ERROR,
-    error
+    type: RECEIVE_PROPERTIES,
+    ...data
   }
 }
 
-export function fetchData() {
+export function fetchProperties() {
 
   return dispatch => {
-    dispatch(fetchRequest)
+    dispatch(fetchStart())
 
     fetchDataApi()
       .then(data => {
-        //console.log('fetchData success')
-        dispatch(fetchSuccess(data))
+        dispatch(receiveProperties(data))
+        dispatch(fetchStop())
       }, err => {
-        dispatch(fetchError(err.message))
+        dispatch(addMessage({message: err, type: 'error'}))
+        dispatch(fetchStop())
       })
   }
-
 }
 
-//actions
-export const PROPERTIES_REQUEST = 'PROPERTIES_REQUEST'
-export const PROPERTIES_SUCCESS = 'PROPERTIES_SUCCESS'
+export const RECEIVE_UNITS = 'RECEIVE_UNITS'
+export const SHOW_CACHED_UNITS = 'SHOW_CACHED_UNITS'
 
-function propertiesRequest() {
+function receiveUnits(buildingId, data) {
   return {
-    type: PROPERTIES_REQUEST
+    type: RECEIVE_UNITS,
+    buildingId,
+    ...data
   }
 }
 
-function propertiesSuccess(properties) {
+function showCachedUnits(units) {
   return {
-    type: PROPERTIES_SUCCESS,
-    properties: properties,
-    receivedAt: Date.now()
+    type: SHOW_CACHED_UNITS,
+    result: {
+      units
+    }
   }
 }
 
-
-/**
-* Get Property list from server
-*/
-export function fetchProperties() {
-  return dispatch => {
-
-    dispatch(propertiesRequest())
-
-    return (new Parse.Query('Property'))
-      .ascending('name')
-      .include('buildings.units')
-      .find()
-      .then(properties => dispatch(propertiesSuccess(properties)))
-  }
-}
-
-export const TENANT_REQUEST = 'TENANT_REQUEST'
-export const TENANT_SUCCESS = 'TENANT_SUCCESS'
-export const TENANT_ERROR = 'TENANT_ERROR'
-
-
-export function fetchTenantsForUnits() {
+export function fetchUnitsForBuilding(buildingId) {
   return (dispatch, getState) => {
+    const building = getState().entities.buildings[buildingId]
+    const cached = building && building.cached
+    if (!cached) {
+      console.log('fetching units over network')
+      dispatch(fetchStart())
+      fetchUnits(buildingId)
+        .then(data => {
+          dispatch(receiveUnits(buildingId, data))
+          return dispatch(fetchStop())
+        }, err => {
+          dispatch(fetchError(err))
+          return dispatch(fetchStop())
+        })
 
+    } else {
+      const units = building.units
+      return dispatch(showCachedUnits(units))//Promise.resolve()
+    }
   }
 }
 
-export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const LOGIN_ERROR = 'LOGIN_ERROR'
-
-function loginRequest() {
-  return {
-    type: LOGIN_REQUEST
-  }
-}
 
 function loginSuccess(user) {
   return {
     type: LOGIN_SUCCESS,
-    user: user
-  }
-}
-
-function loginError(error) {
-  return {
-    type: LOGIN_ERROR,
-    error: error
+    user
   }
 }
 
@@ -120,27 +123,24 @@ function loginError(error) {
 export function loginUser(username, password) {
   return dispatch => {
 
-    dispatch(loginRequest())
+    dispatch(fetchStart())
 
     Parse.User.logIn(username, password).then(
       user => {
+        dispatch(fetchStop())
         dispatch(loginSuccess(user))
         browserHistory.replace('/')
       },
-      error => dispatch(loginError(error))
+      error => {
+        dispatch(fetchStop())
+        dispatch(addMessage(error.message, 'error'))
+      }
     )
   }
 }
 
 
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
-
-function logoutRequest() {
-  return {
-    type: LOGOUT_REQUEST
-  }
-}
 
 function logoutSuccess() {
   return {
@@ -153,61 +153,17 @@ function logoutSuccess() {
 */
 export function logoutUser() {
   return dispatch => {
-    dispatch(logoutRequest())
+
+    dispatch(fetchStart())
 
     Parse.User.logOut().then(() => {
+      dispatch(fetchStop())
       dispatch(logoutSuccess())
       browserHistory.push('/login')
     })
   }
 }
 
-export const LIST_FETCH_REQUEST = 'LIST_FETCH_REQUEST'
-export const LIST_FETCH_SUCCESS = 'LIST_FETCH_SUCCESS'
-export const LIST_FETCH_ERROR = 'LIST_FETCH_ERROR'
-
-function listFetchRequest() {
-  console.log('listFetchRequest')
-  return {
-    type: LIST_FETCH_REQUEST
-  }
-}
-
-function listFetchSuccess() {
-  console.log('listFetchSuccess')
-  return {
-    type: LIST_FETCH_SUCCESS
-  }
-}
-
-function listFetchError(err) {
-  console.log('listFetchError')
-  return {
-    type: LIST_FETCH_ERROR,
-    error: err
-  }
-}
-
-/**
-* Fetch nested entities (if not already loaded)
-*/
-export function fetchListIfNeeded(list) {
-  console.log('fetchListIfNeeded - list:', list)
-  return dispatch => {
-    if (!list || list.length < 1) {
-      return
-    }
-    dispatch(listFetchRequest())
-
-    Parse.Object.fetchAllIfNeeded(list)
-      .then(results => {
-        dispatch(listFetchSuccess())
-      }, err => {
-        console.log('Error fetching list of items:', err.message)
-        dispatch(listFetchError(err.message))
-      })
-  }
-}
 
 //TODO work on destructive functions later
 

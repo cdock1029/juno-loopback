@@ -1,26 +1,46 @@
 import React from 'react'
-import Header from '../components/Header'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
+import Header from './Header'
+import Message from './Message'
+
+import { dismissMessage } from '../actions'
 import { connect } from 'react-redux'
 
 const Root = React.createClass({
 
   render() {
-    const {children, error, isFetching, location, user} = this.props
+    //TODO cleanup
+    const {children, isFetching, location, user, messages} = this.props
     let header = null
     if (user && location.pathname !== '/login') {
       header = <Header />
     }
     return (
-      <div className='ui container' style={{marginTop: '6em'}}>
+      <ReactCSSTransitionGroup className='ui container' style={{marginTop: '6em'}} transitionName='main' transitionEnterTimeout={500} transitionLeaveTimeout={300}>
         {header}
+        {messages.map((m, i) => (
+          <Message
+            key={i}
+            closeMessage={this.closeMessage.bind(null, i)} {...m} />
+          ))}
         {children}
-        {isFetching && <h2 className='ui header'>Fetching....</h2>}
-        {error ? <h1>{error}</h1> : null}
-      </div>
+        {isFetching ? <h1 className='ui header'>Fetching something....</h1> : null}
+      </ReactCSSTransitionGroup>
     )
+  },
+
+  closeMessage(i) {
+    const {dismissMessage, dispatch} = this.props
+    dispatch(dismissMessage(i))
   }
 })
 
-export default connect(({juno: {user, isFetching, error}}) => {
-  return {isFetching, user, error}
+export default connect(({user, messages, isFetching}) => {
+  return {
+    dismissMessage,
+    isFetching,
+    user,
+    messages
+  }
 })(Root)

@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchData } from '../actions'
+import { fetchProperties } from '../actions'
+
 
 /**
 * Only purpose of this component (it seems..) is to load the shared data
@@ -16,20 +17,24 @@ const EntitySelectionContainer = React.createClass({
 
   componentWillMount() {
     const {dispatch, fetchData} = this.props
-    dispatch(fetchData())
+    dispatch(fetchProperties())
   },
 
   render() {
+    const {children} = this.props
     return (
       <div>
-        {this.props.children}
+        {children}
       </div>
     )
-  }
+  },
+
+
+
 })
 
-export default connect(state => {
+export default connect(() => {
   return {
-    fetchData
+    fetchProperties
   }
 })(EntitySelectionContainer)

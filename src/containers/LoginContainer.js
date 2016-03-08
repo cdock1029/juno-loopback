@@ -7,15 +7,10 @@ import Login from '../components/Login'
 
 const LoginContainer = React.createClass({
 
-  getInitialState() {
-    return {
-      error: null
-    }
-  },
-
   render() {
-    console.log('LoginContainer - props:', this.props)
-    return <Login error={this.state.error} login={this.login} passwordRef={this.passwordRef} usernameRef={this.usernameRef} />
+    return <Login login={this.login}
+      passwordRef={this.passwordRef}
+      usernameRef={this.usernameRef} />
   },
 
   usernameRef(node) {
@@ -33,4 +28,6 @@ const LoginContainer = React.createClass({
 
 })
 
-export default connect()(LoginContainer)
+export default connect(() => {
+  return {}
+})(LoginContainer)

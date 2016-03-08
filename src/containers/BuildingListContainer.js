@@ -9,7 +9,9 @@ const BuildingListContainer = React.createClass({
   render() {
     const {buildingId, propertyId, buildingEntities, buildingIdList} = this.props
     return (
-      <EntityList title={'Building'}>
+      <EntityList
+        title={'Building'} 
+        size='eight wide mobile four wide tablet three wide computer'>
         {buildingIdList && buildingIdList
           .sort((a,b) => {
             const addressA = buildingEntities[a].address
@@ -33,11 +35,15 @@ const BuildingListContainer = React.createClass({
 
 })
 
-export default connect(({ data: { entities, result } }, { propertyId }) => {
-  let buildingEntities, buildingIdList;
-  if (entities && result) {
-    buildingEntities = entities.buildings
-    buildingIdList = entities.properties[propertyId].buildings
+export default connect(({
+  entities: {
+    buildings: buildingEntities,
+    properties
+  }
+}, { propertyId }) => {
+  let buildingIdList;
+  if (properties[propertyId]) {
+    buildingIdList = properties[propertyId].buildings
   }
   return {
     buildingEntities,

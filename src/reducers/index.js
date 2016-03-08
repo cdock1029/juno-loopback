@@ -11,84 +11,109 @@ import {
 
 
 import {
-  PROPERTIES_REQUEST,
-  PROPERTIES_SUCCESS,
-  LOGIN_REQUEST,
   LOGIN_SUCCESS,
-  LOGIN_ERROR,
-  LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
-  LIST_FETCH_REQUEST,
-  LIST_FETCH_SUCCESS,
-  LIST_FETCH_ERROR,
-  FETCH_REQUEST,
-  FETCH_SUCCESS,
-  FETCH_ERROR
+  FETCH_START,
+  FETCH_STOP,
+  RECEIVE_PROPERTIES,
+  RECEIVE_UNITS,
+  ADD_MESSAGE,
+  DISMISS_MESSAGE,
+  CLEAR_MESSAGES,
+  SHOW_CACHED_UNITS,
 } from '../actions'
 
 //reducers
-function juno(state = {
-  isFetching: false,
-  properties: [],
-  user: Parse.User.current(),
-  error: null
-}, action) {
-  switch (action.type) {
-    case PROPERTIES_REQUEST:
-      return {
-        ...state,
-        isFetching: true
-      }
-    case PROPERTIES_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        properties: action.properties,
-        lastUpdated: action.receivedAt
-      }
-    case LIST_FETCH_REQUEST:
-      return {
-        ...state,
-        isFetching: true
-      }
-    case LIST_FETCH_SUCCESS:
-      return {
-        ...state,
-        isFetching: false
-      }
-    case LIST_FETCH_ERROR:
-      return {
-        ...state,
-        isFetching: false,
-        error: action.error
-      }
-    case LOGIN_REQUEST:
-      return {
-        ...state,
-        isFetching: true
-      }
+function user(state = Parse.User.current(), { type, user }) {
+  switch (type) {
     case LOGIN_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        user: action.user
-      }
-    case LOGIN_ERROR:
-      return {
-        ...state,
-        isFetching: false,
-        error: action.error
-      }
-    case LOGOUT_REQUEST:
-      return {
-        ...state,
-        isFetching: true
-      }
+      return user
     case LOGOUT_SUCCESS:
+      return null
+    default:
+      return state
+  }
+}
+
+function messages(state = [], {type, payload, index}) {
+  switch (type) {
+    case ADD_MESSAGE:
+      return [
+        ...state,
+        {
+          message: payload.message,
+          type: payload.type
+        }
+      ]
+    case DISMISS_MESSAGE:
+      const newMessages = [...state]
+      newMessages.splice(index, 1)
+      return newMessages
+    case CLEAR_MESSAGES:
+      return []
+    default:
+      return state
+  }
+}
+
+function isFetching(state = false, action) {
+  switch (action.type) {
+    case FETCH_START:
+      return true
+    case FETCH_STOP:
+      return false
+    default:
+      return state
+  }
+}
+
+function entities(state = {
+  buildings: {},
+  leases: {},
+  properties: {},
+  tenants: {},
+  units: {}
+}, { buildingId, result, entities, type }) {
+  switch (type) {
+    case RECEIVE_PROPERTIES:
       return {
         ...state,
-        isFetching: false,
-        user: null
+        properties: {
+          ...state.properties,
+          ...entities.properties
+        },
+        buildings: {
+          ...state.buildings,
+          ...entities.buildings
+        }
+      }
+    case RECEIVE_UNITS:
+      const newEntities = entities
+      const buildingId = buildingId
+      const {buildings, leases, tenants, units} = state
+      const b = buildings[buildingId]
+      return {
+        ...state,
+        units: {
+          ...units,
+          ...newEntities.units
+        },
+        tenants: {
+          ...tenants,
+          ...newEntities.tenants
+        },
+        leases: {
+          ...leases,
+          ...newEntities.leases
+        },
+        buildings: {
+          ...buildings,
+          [buildingId]: {
+            ...b,
+            units: result.units,
+            cached: true
+          }
+        }
       }
     default:
       return state
@@ -96,25 +121,25 @@ function juno(state = {
 }
 
 function data(state = {
-
-}, action) {
-  switch (action.type) {
-    case FETCH_REQUEST:
+  properties: [],
+  buildings: [],
+  units: []
+}, { result, type }) {
+  switch (type) {
+    case RECEIVE_PROPERTIES:
       return {
         ...state,
-        isFetching: true
+        properties: result.properties
       }
-    case FETCH_SUCCESS:
+    case RECEIVE_UNITS:
       return {
         ...state,
-        ...action.data,
-        isFetching: false
+        units: result.units
       }
-    case FETCH_ERROR:
+    case SHOW_CACHED_UNITS:
       return {
         ...state,
-        isFetching: false,
-        error: action.error
+        units: result.units
       }
     default:
       return state
@@ -122,10 +147,11 @@ function data(state = {
 
 }
 
-
-
 export default combineReducers({
-  juno,
+  isFetching,
+  user,
+  entities,
+  messages,
   data,
   form: form.normalize({
     createTenant: {

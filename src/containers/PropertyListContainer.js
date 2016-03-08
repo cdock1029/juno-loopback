@@ -9,8 +9,10 @@ const PropertyListContainer = React.createClass({
   render() {
     const {propertyId, propertyEntities, propertyIdList} = this.props
     return (
-      <EntityList title={'Property'}>
-        {propertyIdList && propertyIdList
+      <EntityList
+        title={'Property'}
+        size='eight wide mobile four wide tablet three wide computer'>
+        {propertyIdList
           .sort((a,b) => {
             const propA = propertyEntities[a].name
             const propB = propertyEntities[b].name
@@ -33,13 +35,10 @@ const PropertyListContainer = React.createClass({
 
 })
 
-export default connect(({ data: { entities, result } }) => {
-
-  let propertyEntities, propertyIdList;
-  if (entities && result) {
-    propertyEntities = entities.properties
-    propertyIdList = result.properties
-  }
+export default connect(({
+  data: { properties: propertyIdList },
+  entities: { properties: propertyEntities }
+}) => {
 
   return {
     propertyEntities,
