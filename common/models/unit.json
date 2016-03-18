@@ -1,0 +1,24 @@
+{
+  "name": "unit",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "number": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "building": {
+      "type": "belongsTo",
+      "model": "building",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
