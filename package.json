@@ -27,5 +27,8 @@
     "type": "",
     "url": ""
   },
+  "engines": {
+    "node": "5.9.0"    
+  },
   "description": "JunoLoopback"
 }
