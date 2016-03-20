@@ -1,3 +1,3 @@
-module.exports = function(Unit) {
+module.exports = function unit(_Unit) {
 
-};
+}

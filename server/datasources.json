@@ -5,7 +5,6 @@
   },
   "postgresql": {
     "name": "postgresql",
-    "connector": "postgresql",
-    "database": "conordockry"
+    "connector": "postgresql"
   }
 }

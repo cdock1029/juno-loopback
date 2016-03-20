@@ -1,3 +1,3 @@
-module.exports = function(Building) {
+module.exports = function building(_Building) {
 
-};
+}

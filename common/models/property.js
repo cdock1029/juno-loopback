@@ -1,3 +1,3 @@
-module.exports = function(Property) {
+module.exports = function property(_Property) {
 
-};
+}
