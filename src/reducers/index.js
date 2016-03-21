@@ -24,7 +24,7 @@ import {
 } from '../actions'
 
 //reducers
-function user(state = Parse.User.current(), { type, user }) {
+function user(state = null, { type, user }) {
   switch (type) {
     case LOGIN_SUCCESS:
       return user

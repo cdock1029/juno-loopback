@@ -42,7 +42,7 @@ render((
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route component={Root}>
-        <Route path="/" component={EntitySelectionContainer} onEnter={requireAuth}>
+        <Route path="/" component={EntitySelectionContainer} >
           <IndexRoute component={EntitySelector} />
           <Route
             path=":propertyId/buildings"
