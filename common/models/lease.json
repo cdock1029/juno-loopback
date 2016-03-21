@@ -1,0 +1,37 @@
+{
+  "name": "lease",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "rent": {
+      "type": "number",
+      "required": true,
+      "default": "0"
+    },
+    "startDate": {
+      "type": "date",
+      "required": true
+    },
+    "endDate": {
+      "type": "date",
+      "required": true
+    },
+    "nextRentDate": {
+      "type": "date",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "unit": {
+      "type": "belongsTo",
+      "model": "unit",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

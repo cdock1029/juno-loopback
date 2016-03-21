@@ -1,6 +1,7 @@
 'use strict'
 
 const async = require('async')
+// const debug = require('debug')('juno:dev:create-sample-data')
 const models = [
   {
     name: 'property',
@@ -41,11 +42,40 @@ const models = [
   },
   {
     name: 'building',
-    data: [{ id: 101, address: '5002', propertyId: 12 }],
+    data: [
+      { id: 101, address: '5002', propertyId: 12 },
+      { id: 102, address: '4840', propertyId: 12 },
+      { id: 103, address: '4860', propertyId: 12 },
+      { id: 104, address: '4872', propertyId: 12 },
+    ],
   },
   {
     name: 'unit',
-    data: [{ number: 7, buildingId: 101 }],
+    data: [
+      { id: 1, number: 7, buildingId: 101 },
+      { id: 2, number: 1, buildingId: 101 },
+      { id: 3, number: 2, buildingId: 101 },
+      { id: 4, number: 3, buildingId: 101 },
+    ],
+  },
+  {
+    name: 'lease',
+    data: [
+      {
+        id: 1,
+        startDate: new Date('2015-01-01T00:00:01'),
+        endDate: new Date('2015-12-31T23:59:59'),
+        rent: 75000,
+        unitId: 1,
+      },
+      {
+        id: 2,
+        startDate: new Date('2016-01-01T00:00:01'),
+        endDate: new Date('2016-12-31T23:59:59'),
+        rent: 77500,
+        unitId: 1,
+      },
+    ],
   },
 ]
 
@@ -61,9 +91,9 @@ module.exports = function createSampleData(app) {
       })
     })
 
-    async.series(steps, (err3, results) => {
+    async.series(steps, (err3, _results) => {
       if (err3) throw err3
-      console.log('Models created: \n', results)
+      // debug('Models created: \n', results)
     })
   })
 }

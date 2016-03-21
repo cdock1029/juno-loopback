@@ -17,6 +17,11 @@
       "type": "belongsTo",
       "model": "property",
       "foreignKey": ""
+    },
+    "units": {
+      "type": "hasMany",
+      "model": "unit",
+      "foreignKey": ""
     }
   },
   "acls": [],

@@ -29,7 +29,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "buildings": {
+      "type": "hasMany",
+      "model": "building",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }

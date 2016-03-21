@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "start": "DEBUG=express:router,loopback:connector:* node .",
+    "start": "DEBUG=juno:* node .",
+    "dev": "DEBUG=juno:*,express:router,loopback:connector:* node .",
     "pretest": "eslint .",
     "posttest": "nsp check"
   },
@@ -11,6 +12,7 @@
     "async": "^1.5.2",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
+    "debug": "^2.2.0",
     "eslint": "^2.4.0",
     "eslint-config-airbnb": "^6.1.0",
     "eslint-plugin-react": "^4.2.3",
@@ -23,7 +25,6 @@
     "serve-favicon": "^2.0.1"
   },
   "devDependencies": {
-    "jshint": "^2.5.6",
     "nsp": "^2.1.0"
   },
   "repository": {

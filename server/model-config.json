@@ -43,5 +43,9 @@
   "unit": {
     "dataSource": "postgresql",
     "public": true
+  },
+  "lease": {
+    "dataSource": "postgresql",
+    "public": true
   }
 }
