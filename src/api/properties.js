@@ -9,13 +9,11 @@ import {
   valuesOf
 } from 'normalizr'
 
-import qs from 'qs'
+const propertyModel = new Schema('properties')
+const buildingModel = new Schema('buildings')
 
-const property = new Schema('properties')
-const building = new Schema('buildings')
-
-property.define({
-  buildings: arrayOf(building)
+propertyModel.define({
+  buildings: arrayOf(buildingModel)
 })
 
 /*building.define({
@@ -25,11 +23,12 @@ property.define({
 
 const headers = {
   'X-Parse-Application-Id': process.env.PARSE_APP_ID,
-  'X-Parse-REST-API-Key': process.env.PARSE_REST_KEY
+  'X-Parse-REST-API-Key': process.env.PARSE_REST_KEY,
+  'Accept': 'application/json'
 }
 
-const qstr = qs.stringify({ filter: {include: 'buildings' }})
-const uri = `http://localhost:3000/api/properties?${qstr}`
+const qstr = JSON.stringify({include: 'buildings' })
+const uri = `http://localhost:3000/api/properties?filter=${qstr}`
 
 const options = {
   method: 'GET',
@@ -50,15 +49,16 @@ export default function fetchDataApi() {
           } else {
             let properties = {properties: (json)}
             const response = normalize(properties, {
-              properties: arrayOf(property)
+              properties: arrayOf(propertyModel)
             })
-            console.log(response)
+            console.log('Properties response:', response)
             resolve(response)
           }
         })
       })
       .catch(err => {
-        reject(err)
+        // TODO examine?
+        reject(err.toString())
       })
   })
   return p

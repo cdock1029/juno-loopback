@@ -9,68 +9,44 @@ import {
   valuesOf
 } from 'normalizr'
 
-import urlencode from 'urlencode'
+const unitModel = new Schema('units')
+const leaseModel = new Schema('leases')
+const tenantModel = new Schema('tenants')
 
-const idAttribute = {idAttribute: 'objectId'}
-
-const unit = new Schema('units', idAttribute)
-const lease = new Schema('leases', idAttribute)
-const tenant = new Schema('tenants', idAttribute)
-
-unit.define({
-  leases: arrayOf(lease),
+unitModel.define({
+  leases: arrayOf(leaseModel),
 })
 
-lease.define({
-  tenants: arrayOf(tenant),
-  unit: unit
+leaseModel.define({
+  tenants: arrayOf(tenantModel),
 })
-
-tenant.define({
-  leases: arrayOf(lease)
-})
-
-const headers = {
-  'X-Parse-Application-Id': process.env.PARSE_APP_ID,
-  'X-Parse-REST-API-Key': process.env.PARSE_REST_KEY
-}
-
-const uri = 'https://api.parse.com/1/classes/Unit?'
 
 const options = {
   method: 'GET',
-  headers: headers
+  headers: { 'Accept': 'application/json' }
 }
 export default function fetchUnits(buildingId) {
 
-  const user = Parse.User.current()
-  options.headers['X-Parse-Session-Token'] = user && user.getSessionToken()
+  // TODO DATE is just an example. Make more precise
+  const qstr = { include: {relation: 'leases', scope: {
+      where: { nextRentDate: { gt: (new Date()).toISOString() } },
+      include: 'tenants' } } }
 
-  //configure query string with buildingId
-  let query = {
-    include: 'leases.tenants',
-    where: JSON.stringify({
-      building: {
-        '__type': 'Pointer',
-        className: 'Building',
-        objectId: buildingId
-      }
-    })
-  }
-  console.log('query:', query)
-  query = urlencode.stringify(query)
-  console.log('Fetching:', uri + query)
+  console.log('Pre fetch qstr:', qstr)
+  const uri = 'http://localhost:3000/api/buildings/' + buildingId + '/units?filter=' + JSON.stringify(qstr)
+
+  console.log('Fetching:', uri)
 
   const p = new Promise((resolve, reject) => {
-    fetch(uri + query, options)
+    fetch(uri, options)
       .then(res => {
         return res.json().then(json => {
           if (json.error) {
             reject(json.error)
           } else {
-            let units = {units: (json.results)}
+            let units = { units: json }
             const response = normalize(units, {
-              units: arrayOf(unit)
+              units: arrayOf(unitModel)
             })
             console.log('unit response:', response)
             resolve(response)

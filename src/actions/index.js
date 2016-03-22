@@ -59,7 +59,7 @@ export function fetchProperties() {
         dispatch(receiveProperties(data))
         dispatch(fetchStop())
       }, err => {
-        dispatch(addMessage({message: err, type: 'error'}))
+        dispatch(addMessage(err.message, 'error'))
         dispatch(fetchStop())
       })
   }
@@ -97,13 +97,13 @@ export function fetchUnitsForBuilding(buildingId) {
           dispatch(receiveUnits(buildingId, data))
           return dispatch(fetchStop())
         }, err => {
-          dispatch(fetchError(err))
+          dispatch(addMessage(err.message, 'error'))
           return dispatch(fetchStop())
         })
 
     } else {
       const units = building.units
-      return dispatch(showCachedUnits(units))//Promise.resolve()
+      return dispatch(showCachedUnits(units))
     }
   }
 }
