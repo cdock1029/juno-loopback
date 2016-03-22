@@ -1,7 +1,7 @@
 'use strict'
 
 const async = require('async')
-// const debug = require('debug')('juno:dev:create-sample-data')
+const debug = require('debug')('juno:dev:create-sample-data')
 const models = [
   {
     name: 'property',
@@ -71,9 +71,22 @@ const models = [
       {
         id: 2,
         startDate: new Date('2016-01-01T00:00:01'),
+        nextRentDate: new Date('2016-04-01T02:00:01'),
         endDate: new Date('2016-12-31T23:59:59'),
         rent: 77500,
         unitId: 1,
+      },
+    ],
+  },
+  {
+    name: 'tenant',
+    data: [
+      {
+        id: 14,
+        firstName: 'BILL',
+        lastName: 'BRASKY',
+        phone: '5555555555',
+        email: 'billbrasky@snl.com',
       },
     ],
   },
@@ -90,6 +103,28 @@ module.exports = function createSampleData(app) {
         // console.log('Models created: \n', results);
       })
     })
+
+    // add leases to tenant (id: 14)
+    const createTenantLeaseRelations = cb => {
+      const tenantModel = app.models.tenant
+      const leaseModel = app.models.lease
+      tenantModel.find({ where: { id: 14 } }, (error, tenants) => {
+        if (error) return cb(error, null)
+        return leaseModel.find({ where: { id: { inq: [1, 2] } } }, (error2, leases) => {
+          if (error2) return cb(error2, null)
+          leases.forEach(l => {
+            tenants[0].leases.add(l, err3 => {
+              if (err3) return cb(err3, null)
+              debug('Added lease %d to tenant %d', l.id, tenants[0].id)
+              return null
+            })
+          })
+          return cb(null, { result: 'Success? I guess' })
+        })
+      })
+    }
+
+    steps.push(createTenantLeaseRelations)
 
     async.series(steps, (err3, _results) => {
       if (err3) throw err3

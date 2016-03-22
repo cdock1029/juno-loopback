@@ -5,6 +5,7 @@
   "scripts": {
     "start": "DEBUG=juno:* node .",
     "dev": "DEBUG=juno:*,express:router,loopback:connector:* node .",
+    "debug": "DEBUG=juno:* node .",
     "pretest": "eslint .",
     "posttest": "nsp check"
   },

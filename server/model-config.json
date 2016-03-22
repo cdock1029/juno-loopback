@@ -47,5 +47,9 @@
   "lease": {
     "dataSource": "postgresql",
     "public": true
+  },
+  "tenant": {
+    "dataSource": "postgresql",
+    "public": true
   }
 }

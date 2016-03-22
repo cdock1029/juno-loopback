@@ -30,6 +30,11 @@
       "type": "belongsTo",
       "model": "unit",
       "foreignKey": ""
+    },
+    "tenants": {
+      "type": "hasAndBelongsToMany",
+      "model": "tenant",
+      "foreignKey": ""
     }
   },
   "acls": [],

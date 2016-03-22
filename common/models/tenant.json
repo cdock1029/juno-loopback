@@ -1,0 +1,37 @@
+{
+  "name": "tenant",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "required": true
+    },
+    "middleName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string",
+      "required": true
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "leases": {
+      "type": "hasAndBelongsToMany",
+      "model": "lease",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
