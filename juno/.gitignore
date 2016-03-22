@@ -1,0 +1,4 @@
+public/bundle.js*
+src/config.js
+utilities
+node_modules
