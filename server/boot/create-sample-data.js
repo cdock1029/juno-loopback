@@ -1,5 +1,3 @@
-'use strict'
-
 const async = require('async')
 const debug = require('debug')('juno:dev:create-sample-data')
 const models = [

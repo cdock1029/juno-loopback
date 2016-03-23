@@ -1,0 +1,18 @@
+{
+  "extends": "../../.eslintrc",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "rules": {
+    "react/prefer-es6-class": [2, "never"],
+    "react/jsx-closing-bracket-location": [1, "after-props"],
+    "jsx-quotes": [2, "prefer-single"],
+    "max-len": [2, 100, 2, {
+      "ignoreUrls": true,
+      "ignoreComments": false,
+      "ignorePattern": "\\/"
+    }],
+  }
+}

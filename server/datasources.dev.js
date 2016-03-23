@@ -1,5 +1,3 @@
-'use strict'
-
 const postgresUrl = process.env.DATABASE_URL
 
 module.exports = {
