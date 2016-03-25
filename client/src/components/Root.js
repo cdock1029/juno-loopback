@@ -10,11 +10,11 @@ import { connect } from 'react-redux'
 const Root = React.createClass({
 
   propTypes: {
-    children: PropTypes.array.isRequired,
+    children: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     dismissMessage: PropTypes.func.isRequired,
-    isFetching: PropTypes.func.isRequired,
-    location: PropTypes.string.isRequired,
+    isFetching: PropTypes.bool.isRequired,
+    location: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     messages: PropTypes.array.isRequired,
   },

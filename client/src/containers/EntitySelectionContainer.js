@@ -16,7 +16,7 @@ import { fetchProperties } from '../actions'
 const EntitySelectionContainer = React.createClass({
 
   propTypes: {
-    children: React.PropTypes.array.isRequired,
+    children: React.PropTypes.object.isRequired,
     dispatch: React.PropTypes.func.isRequired,
     fetchProperties: React.PropTypes.func.isRequired,
   },

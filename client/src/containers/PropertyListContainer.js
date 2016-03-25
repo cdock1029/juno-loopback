@@ -7,8 +7,8 @@ import { connect } from 'react-redux'
 const PropertyListContainer = React.createClass({
 
   propTypes: {
+    propertyId: React.PropTypes.string,
     propertyEntities: React.PropTypes.object.isRequired,
-    propertyId: React.PropTypes.number.isRequired,
     propertyIdList: React.PropTypes.array.isRequired,
   },
 
@@ -29,7 +29,7 @@ const PropertyListContainer = React.createClass({
           .map((id) => (
             <EntityListItem
               key={id}
-              active={propertyId === id}
+              active={propertyId === id.toString()}
               path={`/${id}/buildings`}
               text={propertyEntities[id].name} />
           ))}

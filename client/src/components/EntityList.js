@@ -11,7 +11,7 @@ const EntityList = ({ children, title, size }) => (
 )
 
 EntityList.propTypes = {
-  children: React.PropTypes.array.isRequired,
+  children: React.PropTypes.array,
   title: React.PropTypes.string.isRequired,
   size: React.PropTypes.string.isRequired,
 }

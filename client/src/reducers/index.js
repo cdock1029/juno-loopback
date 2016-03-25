@@ -21,7 +21,7 @@ import {
 } from '../actions'
 
 // reducers
-function user(state = null, { type, user: userObj }) {
+function user(state = {}, { type, user: userObj }) {
   switch (type) {
     case LOGIN_SUCCESS:
       return userObj
@@ -81,11 +81,11 @@ function entities(state = {
         ...state,
         properties: {
           ...state.properties,
-          ...entities.properties,
+          ...newEntities.properties,
         },
         buildings: {
           ...state.buildings,
-          ...entities.buildings,
+          ...newEntities.buildings,
         },
       }
     case RECEIVE_UNITS: {

@@ -9,15 +9,15 @@ import { fetchUnitsForBuilding } from '../actions'
 const UnitListContainer = React.createClass({
 
   propTypes: {
-    buildingId: React.PropTypes.number.isRequired,
+    propertyId: React.PropTypes.string.isRequired,
+    buildingId: React.PropTypes.string.isRequired,
+    unitId: React.PropTypes.string,
     dispatch: React.PropTypes.func.isRequired,
     fetchUnitsForBuilding: React.PropTypes.func.isRequired,
-    leaseEntities: React.PropTypes.object.isRequired,
-    propertyId: React.PropTypes.number.isRequired,
-    tenantEntities: React.PropTypes.object.isRequired,
-    unitEntities: React.PropTypes.object.isRequired,
-    unitId: React.PropTypes.number.isRequired,
     unitIdList: React.PropTypes.array.isRequired,
+    unitEntities: React.PropTypes.object.isRequired,
+    leaseEntities: React.PropTypes.object.isRequired,
+    tenantEntities: React.PropTypes.object.isRequired,
   },
 
   componentWillMount() {

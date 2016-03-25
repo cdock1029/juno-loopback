@@ -29,7 +29,7 @@ const toLowerCase = function _toLowerCase(value) {
   return value && value.toLowerCase()
 }
 
-export default {
+export {
   toUpperCase,
   toLowerCase,
   normalizePhone,

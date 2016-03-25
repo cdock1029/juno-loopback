@@ -7,10 +7,10 @@ import { connect } from 'react-redux'
 const BuildingListContainer = React.createClass({
 
   propTypes: {
-    buildingId: PropTypes.number.isRequired,
-    propertyId: PropTypes.number.isRequired,
+    buildingId: PropTypes.string,
+    propertyId: PropTypes.string.isRequired,
     buildingEntities: PropTypes.object.isRequired,
-    buildingIdList: PropTypes.array.isRequired,
+    buildingIdList: PropTypes.array,
   },
 
   render() {
@@ -20,6 +20,8 @@ const BuildingListContainer = React.createClass({
       buildingEntities,
       buildingIdList,
     } = this.props
+    // TODO: should we short cricuit & not render when buildingListId
+    // not defined ? (leaf nodes rendered before data fetched)
     return (
       <EntityList
         title={'Building'}
@@ -35,13 +37,13 @@ const BuildingListContainer = React.createClass({
           .map((id) => (
             <EntityListItem
               key={id}
-              active={buildingId === id}
+              active={buildingId === id.toString()}
               path={`/${propertyId}/buildings/${id}/units`}
               text={buildingEntities[id].address} />
-          ))
-        })}
+        ))}
       </EntityList>
-  )},
+    )
+  },
 })
 
 export default connect(({

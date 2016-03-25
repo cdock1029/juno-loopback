@@ -1,13 +1,17 @@
+const path = require('path')
+
 module.exports = {
-  entry: ['./client/src/app.js'],
+  entry: {
+    app: ['./client/src/app.js'],
+  },
   output: {
-    path: `${__dirname}/client/public`,
+    path: path.resolve(__dirname, 'client/public'),
     publicPath: '/',
     filename: 'bundle.js',
   },
   devtool: 'source-map',
   devServer: {
-    contentBase: './client/public',
+    contentBase: 'client/public',
   },
   module: {
     loaders: [
