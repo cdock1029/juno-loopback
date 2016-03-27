@@ -3,6 +3,7 @@ import {
   Schema,
   arrayOf,
 } from 'normalizr'
+import delay from 'delay'
 
 const unitModel = new Schema('units')
 const leaseModel = new Schema('leases')
@@ -33,6 +34,7 @@ export default function fetchUnits(buildingId) {
 
   const p = new Promise((resolve, reject) => {
     fetch(uri, options)
+    .then(delay(500))
     .then(res => res.json().then(json => {
       if (json.error) {
         reject(json.error)

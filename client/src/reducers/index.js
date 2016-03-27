@@ -57,12 +57,12 @@ function messages(state = [], { type, payload, index }) {
   }
 }
 
-function isFetching(state = false, action) {
+function isFetching(state = 0, action) {
   switch (action.type) {
     case FETCH_START:
-      return true
+      return state + 1
     case FETCH_STOP:
-      return false
+      return state > 0 ? state - 1 : 0
     default:
       return state
   }
@@ -123,7 +123,6 @@ function entities(state = {
 
 function data(state = {
   properties: [],
-  buildings: [],
   units: [],
 }, { result, type }) {
   switch (type) {

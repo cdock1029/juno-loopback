@@ -3,6 +3,7 @@ import {
   Schema,
   arrayOf,
 } from 'normalizr'
+import delay from 'delay'
 
 const propertyModel = new Schema('properties')
 const buildingModel = new Schema('buildings')
@@ -37,6 +38,7 @@ export default function fetchDataApi() {
 
   const p = new Promise((resolve, reject) => {
     fetch(uri, options)
+    .then(delay(700))
     .then(res => res.json().then(json => {
       if (json.error) {
         reject(json.error)

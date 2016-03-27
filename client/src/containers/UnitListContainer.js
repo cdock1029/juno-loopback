@@ -56,7 +56,7 @@ const UnitListContainer = React.createClass({
             return (
               <EntityListItem
                 key={id}
-                active={unitId === id}
+                active={unitId === id.toString()}
                 path={`/${propertyId}/buildings/${buildingId}/units/${id}`}
                 text={
                   `${unit.number}\u00a0\u00a0\u00a0\u00a0${tenants ?

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 import Header from './Header'
 import Message from './Message'
@@ -13,7 +13,6 @@ const Root = React.createClass({
     children: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     dismissMessage: PropTypes.func.isRequired,
-    isFetching: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     messages: PropTypes.array.isRequired,
@@ -26,13 +25,14 @@ const Root = React.createClass({
 
   render() {
     // TODO cleanup
-    const { children, isFetching, location, user, messages } = this.props
+    const { children, location, user, messages } = this.props
     let header = null
     if (user && location.pathname !== '/login') {
       header = <Header />
     }
+    // TODO put ReactCSSTransitionGroup back here, or refactor
     return (
-      <ReactCSSTransitionGroup
+      <div
         className='ui container'
         style={{ marginTop: '6em' }}
         transitionName='main'
@@ -47,16 +47,14 @@ const Root = React.createClass({
             {...m} />
           ))}
         {children}
-        {isFetching ? <h1 className='ui header'>Fetching something....</h1> : null}
-      </ReactCSSTransitionGroup>
+      </div>
     )
   },
 
 })
 
-export default connect(({ user, messages, isFetching }) => ({
+export default connect(({ user, messages }) => ({
   dismissMessage,
-  isFetching,
   user,
   messages,
 }))(Root)

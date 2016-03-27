@@ -38,6 +38,9 @@ render((
           <Route
             path=':propertyId/buildings/:buildingId/units'
             component={EntitySelector} />
+          <Route
+            path=':propertyId/buildings/:buildingId/units/:unitId'
+            component={EntitySelector} />
         </Route>
         <Route path='/login' component={LoginContainer} />
       </Route>
