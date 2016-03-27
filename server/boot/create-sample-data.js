@@ -88,6 +88,14 @@ const models = [
       },
     ],
   },
+  {
+    name: 'transactionType',
+    data: [
+      { name: 'RENT CHARGE' },
+      { name: 'PAYMENT' },
+      { name: 'LATE FEE' },
+    ],
+  },
 ]
 
 module.exports = function createSampleData(app) {

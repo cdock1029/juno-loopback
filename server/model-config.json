@@ -51,5 +51,13 @@
   "tenant": {
     "dataSource": "postgresql",
     "public": true
+  },
+  "transactionType": {
+    "dataSource": "postgresql",
+    "public": true
+  },
+  "transaction": {
+    "dataSource": "postgresql",
+    "public": true
   }
 }
