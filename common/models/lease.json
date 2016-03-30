@@ -35,6 +35,11 @@
       "type": "hasAndBelongsToMany",
       "model": "tenant",
       "foreignKey": ""
+    },
+    "transactions": {
+      "type": "hasMany",
+      "model": "transaction",
+      "foreignKey": ""
     }
   },
   "acls": [],

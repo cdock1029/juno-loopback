@@ -23,9 +23,17 @@ const options = {
 }
 export default function fetchUnits(buildingId) {
   // TODO DATE is just an example. Make more precise
-  const qstr = { include: { relation: 'leases', scope: {
-    where: { nextRentDate: { gt: (new Date()).toISOString() } },
-    include: 'tenants' } } }
+  const qstr = {
+    include: {
+      relation: 'leases',
+      scope: {
+        where: {
+          endDate: { gt: (new Date()).toISOString() },
+        },
+        include: 'tenants',
+      },
+    },
+  }
 
   console.log('Pre fetch qstr:', qstr)
   const uri = `http://localhost:3000/api/buildings/${buildingId}/units?filter=${JSON.stringify(qstr)}`

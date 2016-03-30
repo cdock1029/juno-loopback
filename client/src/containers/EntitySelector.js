@@ -6,6 +6,7 @@ import PropertyListContainer from './PropertyListContainer'
 import BuildingListContainer from './BuildingListContainer'
 import UnitListContainer from './UnitListContainer'
 import UnitDetailContainer from './UnitDetailContainer'
+import TenantSearchContainer from './TenantSearchContainer'
 
 const EntitySelector = ({ isFetching, params }) => (
   <div className='ui four column grid'>
@@ -15,6 +16,7 @@ const EntitySelector = ({ isFetching, params }) => (
         <PropertyListContainer {...params} />
         {params.propertyId ? <BuildingListContainer {...params} /> : null}
         {params.buildingId ? <UnitListContainer {...params} /> : null}
+        <TenantSearchContainer />
         <div className={cx('ui', { active: isFetching }, 'inverted dimmer')}>
           <div className='ui loader'></div>
         </div>

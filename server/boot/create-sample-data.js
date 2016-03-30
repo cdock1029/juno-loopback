@@ -86,14 +86,46 @@ const models = [
         phone: '5555555555',
         email: 'billbrasky@snl.com',
       },
+      {
+        firstName: 'MICKEY',
+        lastName: 'MOUSE',
+        phone: '1235551234',
+        email: 'mm@disney.com',
+      },
+      {
+        firstName: 'WILE',
+        middleName: 'E',
+        lastName: 'CAYOTE',
+        phone: '3307270000',
+        email: 'wile@wb.com',
+      },
     ],
   },
   {
     name: 'transactionType',
     data: [
-      { name: 'RENT CHARGE' },
-      { name: 'PAYMENT' },
-      { name: 'LATE FEE' },
+      { id: 1, name: 'RENT CHARGE' },
+      { id: 2, name: 'PAYMENT' },
+      { id: 3, name: 'LATE FEE' },
+    ],
+  },
+  {
+    name: 'transaction',
+    data: [
+      {
+        dateCreated: new Date(),
+        transactionDate: new Date('2016-01-01T00:02:59'),
+        amount: 77500,
+        transactionTypeId: 1,
+        leaseId: 2,
+      },
+      {
+        dateCreated: new Date(),
+        transactionDate: new Date('2016-05-05T00:09:59'),
+        amount: 75000,
+        transactionTypeId: 2,
+        leaseId: 2,
+      },
     ],
   },
 ]

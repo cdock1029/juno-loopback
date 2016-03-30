@@ -20,7 +20,18 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "transactionType": {
+      "type": "belongsTo",
+      "model": "transactionType",
+      "foreignKey": ""
+    },
+    "lease": {
+      "type": "belongsTo",
+      "model": "lease",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }
